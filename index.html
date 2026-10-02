@@ -131,11 +131,6 @@ button:active { transform: scale(.985); }
   <audio id="radio" preload="none"></audio>
   <button id="playButton">▶ Spill The Hits</button>
   <div class="status" id="status">Klar til å spille</div>
-  <div class="volume-control">
-    <span class="volume-icon" id="volumeIcon">🔊</span>
-    <input id="volumeSlider" type="range" min="0" max="100" value="80" aria-label="Volum">
-    <span class="volume-value" id="volumeValue">80%</span>
-  </div>
   <div class="volume-panel">
     <span id="volLow" class="vol-icon">🔉</span>
     <input id="volumeSlider" class="volume-slider" type="range" min="0" max="100" value="80" aria-label="Volum">
@@ -290,21 +285,17 @@ async function updateFromBot() {
 
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeValue = document.getElementById("volumeValue");
-const volumeIcon = document.getElementById("volumeIcon");
 
 const savedVolume = localStorage.getItem("theHitsVolume");
-if (savedVolume !== null) {
-  volumeSlider.value = savedVolume;
-}
-audio.volume = Number(volumeSlider.value) / 100;
-volumeValue.textContent = volumeSlider.value + "%";
-volumeIcon.textContent = audio.volume === 0 ? "🔇" : audio.volume < 0.5 ? "🔉" : "🔊";
+const initialVolume = savedVolume !== null ? Number(savedVolume) : 80;
+volumeSlider.value = initialVolume;
+radio.volume = initialVolume / 100;
+volumeValue.textContent = initialVolume + "%";
 
 volumeSlider.addEventListener("input", () => {
   const value = Number(volumeSlider.value);
-  audio.volume = value / 100;
+  radio.volume = value / 100;
   volumeValue.textContent = value + "%";
-  volumeIcon.textContent = value === 0 ? "🔇" : value < 50 ? "🔉" : "🔊";
   localStorage.setItem("theHitsVolume", String(value));
 });
 
@@ -329,24 +320,6 @@ async function updateNowPlaying() {
 
 updateNowPlaying();
 setInterval(updateNowPlaying, 7000);
-
-// The Hits volume control
-const volumeSlider2 = document.getElementById("volumeSlider");
-const volumeValue2 = document.getElementById("volumeValue");
-if (volumeSlider2 && volumeValue2) {
-  const stored = localStorage.getItem("theHitsVolume");
-  const initial = stored !== null ? Number(stored) : 80;
-  volumeSlider2.value = initial;
-  audio.volume = initial / 100;
-  volumeValue2.textContent = initial + "%";
-
-  volumeSlider2.addEventListener("input", function () {
-    const v = Number(this.value);
-    audio.volume = v / 100;
-    volumeValue2.textContent = v + "%";
-    localStorage.setItem("theHitsVolume", String(v));
-  });
-}
 
 </script>
 </body>
