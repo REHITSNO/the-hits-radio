@@ -87,6 +87,32 @@ button:active { transform: scale(.985); }
   .player { margin-top: 10px; padding: 25px 19px; border-radius: 24px; }
   .brand { font-size: 32px; }
 }
+
+.volume-panel {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 20px 0 6px;
+  padding: 13px 14px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(184,255,0,.18);
+  border-radius: 14px;
+}
+.vol-icon { font-size: 16px; line-height: 1; }
+.volume-slider {
+  flex: 1;
+  min-width: 0;
+  accent-color: #b8ff00;
+  cursor: pointer;
+}
+.volume-value {
+  width: 38px;
+  text-align: right;
+  color: #b8ff00;
+  font-size: 12px;
+  font-weight: 800;
+}
+
 </style>
 </head>
 <body>
@@ -110,6 +136,13 @@ button:active { transform: scale(.985); }
     <input id="volumeSlider" type="range" min="0" max="100" value="80" aria-label="Volum">
     <span class="volume-value" id="volumeValue">80%</span>
   </div>
+  <div class="volume-panel">
+    <span id="volLow" class="vol-icon">🔉</span>
+    <input id="volumeSlider" class="volume-slider" type="range" min="0" max="100" value="80" aria-label="Volum">
+    <span class="vol-icon">🔊</span>
+    <span id="volumeValue" class="volume-value">80%</span>
+  </div>
+
   <section class="history">
     <div class="label history-title">SIST SPILT</div>
     <div id="historyList" class="history-list">Ingen historikk ennå</div>
@@ -296,6 +329,25 @@ async function updateNowPlaying() {
 
 updateNowPlaying();
 setInterval(updateNowPlaying, 7000);
+
+// The Hits volume control
+const volumeSlider2 = document.getElementById("volumeSlider");
+const volumeValue2 = document.getElementById("volumeValue");
+if (volumeSlider2 && volumeValue2) {
+  const stored = localStorage.getItem("theHitsVolume");
+  const initial = stored !== null ? Number(stored) : 80;
+  volumeSlider2.value = initial;
+  audio.volume = initial / 100;
+  volumeValue2.textContent = initial + "%";
+
+  volumeSlider2.addEventListener("input", function () {
+    const v = Number(this.value);
+    audio.volume = v / 100;
+    volumeValue2.textContent = v + "%";
+    localStorage.setItem("theHitsVolume", String(v));
+  });
+}
+
 </script>
 </body>
 </html>
