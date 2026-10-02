@@ -1,116 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111111">
-<title>The Hits Radio</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Hits</title>
 <style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 24px 16px;
-  background: radial-gradient(circle at top, #182300 0%, #111 45%, #090909 100%);
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.player {
-  width: min(100%, 390px);
-  background: rgba(25,25,25,.96);
-  border-radius: 28px;
-  padding: 30px 24px;
-  text-align: center;
-  box-shadow: 0 18px 60px rgba(0,0,0,.55);
-}
-.brand { font-size: 36px; font-weight: 900; letter-spacing: 1px; margin: 0; }
-.top-logo { width: 190px; max-width: 70%; height: 72px; object-fit: cover; object-position: center; border-radius: 12px; }
-.tagline { opacity: .62; font-size: 13px; margin-top: 5px; }
-.live { color: #c8ff1a; font-weight: 800; margin: 16px 0 22px; }
-.cover {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 20px;
-  background: linear-gradient(145deg,#292929,#151515);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  margin-bottom: 22px;
-  overflow: hidden;
-}
-.cover img { width: 100%; height: 100%; object-fit: cover; }
-#fallbackLogo { display: block; }
-#cover { display: none; }
-.label { opacity: .58; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; }
-.song { font-size: 20px; font-weight: 800; line-height: 1.3; margin: 8px 0 20px; min-height: 52px; }
-.program { font-size: 14px; opacity: .8; margin-bottom: 24px; }
-button {
-  width: 100%;
-  border: 0;
-  border-radius: 999px;
-  padding: 17px 20px;
-  font-size: 17px;
-  font-weight: 800;
-  cursor: pointer;
-  background: #b8f20c;
-  color: #0a0a0a;
-}
-button:active { transform: scale(.985); }
-.status { min-height: 18px; margin-top: 13px; font-size: 12px; opacity: .6; }
-.volume-control {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 18px 0 4px;
-}
-.volume-icon { font-size: 18px; }
-.volume-control input[type="range"] {
-  flex: 1;
-  accent-color: #b8ff00;
-  cursor: pointer;
-}
-.volume-value {
-  min-width: 42px;
-  text-align: right;
-  font-size: 12px;
-  color: #aaa;
-}
-.history { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.08); text-align: left; }
-.history-title { color: #b8f20c; margin-bottom: 12px; }
-.history-item { padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
-@media (max-width: 420px) {
-  body { padding: 12px; align-items: flex-start; }
-  .player { margin-top: 10px; padding: 25px 19px; border-radius: 24px; }
-  .brand { font-size: 32px; }
-}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#152400 0,#0b0d0b 45%,#070707 100%);font-family:Arial,sans-serif;color:#fff;display:flex;justify-content:center;padding:24px 14px}
+.player{width:390px;max-width:100%;background:#181918;border-radius:30px;padding:28px 24px;box-shadow:0 18px 50px #0008;text-align:center}
+.top-logo{width:190px;height:72px;object-fit:cover;object-position:center;border-radius:12px}
+.tagline{font-size:12px;color:#aaa;margin:7px 0 17px}
+.live{font-weight:900;color:#b7ff00;font-size:18px;margin-bottom:24px}
+.artwork{width:100%;aspect-ratio:1/1;position:relative;border-radius:22px;overflow:hidden;background:#0c0c0c}
+.artwork img{width:100%;height:100%;object-fit:cover;display:block}
+.label{margin-top:20px;font-size:12px;font-weight:900;letter-spacing:1.4px;color:#969096}
+.title{font-size:22px;font-weight:900;line-height:1.22;margin:10px 0 26px}
+.program{font-size:14px;color:#bbb;margin-bottom:25px}
+button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;color:#050505;font-size:17px;font-weight:900;cursor:pointer}
+.status{font-size:12px;color:#aaa;margin:12px 0 20px}
+.volume{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid #b7ff0040;border-radius:14px;background:#ffffff08}
+.volume input{flex:1;min-width:0;accent-color:#b7ff00}
+.volume-value{width:40px;text-align:right;color:#b7ff00;font-size:12px;font-weight:900}
+.history{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
+.history-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:12px}
+.history-item{font-size:14px;padding:9px 0;border-bottom:1px solid #ffffff0d;line-height:1.25}
 
-.volume-panel {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin: 20px 0 6px;
-  padding: 13px 14px;
-  background: rgba(255,255,255,.035);
-  border: 1px solid rgba(184,255,0,.18);
-  border-radius: 14px;
+.next-song{
+  margin:-14px 0 24px;
+  font-size:13px;
+  line-height:1.35;
+  color:#b9b9b9;
 }
-.vol-icon { font-size: 16px; line-height: 1; }
-.volume-slider {
-  flex: 1;
-  min-width: 0;
-  accent-color: #b8ff00;
-  cursor: pointer;
-}
-.volume-value {
-  width: 38px;
-  text-align: right;
-  color: #b8ff00;
-  font-size: 12px;
-  font-weight: 800;
+.next-song span{
+  color:#b7ff00;
+  font-weight:900;
+  letter-spacing:.7px;
 }
 
 </style>
@@ -121,206 +45,126 @@ button:active { transform: scale(.985); }
   <div class="tagline">No repeats. Just beats.</div>
   <div class="live">● LIVE RADIO</div>
 
-  <div class="cover" id="coverBox"><img id="fallbackLogo" src="the-hits-logo.png" alt="The Hits"><img id="cover" alt="Albumcover"></div>
+  <div class="artwork">
+    <img id="cover" src="the-hits-logo.png" alt="Albumcover">
+  </div>
 
   <div class="label">🎵 NÅ SPILLES</div>
-  <div class="song" id="nowPlaying">Henter låt…</div>
-
-  <div class="program">📻 <span id="program">THE HITS</span></div>
+  <div id="nowPlaying" class="title">Henter låt...</div>
+  <div id="nextSong" class="next-song"><span>NESTE →</span> Henter neste låt...</div>
+  <div id="program" class="program">📻 THE HITS</div>
 
   <audio id="radio" preload="none"></audio>
   <button id="playButton">▶ Spill The Hits</button>
-  <div class="status" id="status">Klar til å spille</div>
-  <div class="volume-panel">
-    <span id="volLow" class="vol-icon">🔉</span>
-    <input id="volumeSlider" class="volume-slider" type="range" min="0" max="100" value="80" aria-label="Volum">
-    <span class="vol-icon">🔊</span>
+  <div id="status" class="status">Klar til å spille</div>
+
+  <div class="volume">
+    <span>🔉</span>
+    <input id="volumeSlider" type="range" min="0" max="100" value="80" aria-label="Volum">
+    <span>🔊</span>
     <span id="volumeValue" class="volume-value">80%</span>
   </div>
 
   <section class="history">
-    <div class="label history-title">SIST SPILT</div>
-    <div id="historyList" class="history-list">Ingen historikk ennå</div>
+    <div class="history-heading">SIST SPILT</div>
+    <div id="historyList">Ingen historikk ennå</div>
   </section>
 </main>
 
 <script>
-const BASE = "https://fascinating-raid-loved-them.trycloudflare.com";
-const MOUNT = "/thehits";
-const STREAM_URL = BASE + MOUNT;
-const STATUS_URL = BASE + "/status-json.xsl";
+const STREAM_URL = "https://fascinating-raid-loved-them.trycloudflare.com/thehits";
+const API_URL = "https://wave-margin-hawaiian-shopzilla.trycloudflare.com/api/status";
+const FALLBACK = "the-hits-logo.png";
 
 const radio = document.getElementById("radio");
-const button = document.getElementById("playButton");
+const playButton = document.getElementById("playButton");
 const statusText = document.getElementById("status");
 const nowPlaying = document.getElementById("nowPlaying");
 const program = document.getElementById("program");
+const nextSong = document.getElementById("nextSong");
+const cover = document.getElementById("cover");
+const historyList = document.getElementById("historyList");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeValue = document.getElementById("volumeValue");
 
 radio.src = STREAM_URL;
 
-button.addEventListener("click", async () => {
+const savedVolume = localStorage.getItem("theHitsVolume");
+const initialVolume = savedVolume === null ? 80 : Number(savedVolume);
+volumeSlider.value = initialVolume;
+radio.volume = initialVolume / 100;
+volumeValue.textContent = initialVolume + "%";
+
+volumeSlider.addEventListener("input", () => {
+  const v = Number(volumeSlider.value);
+  radio.volume = v / 100;
+  volumeValue.textContent = v + "%";
+  localStorage.setItem("theHitsVolume", String(v));
+});
+
+playButton.addEventListener("click", async () => {
   if (radio.paused) {
     try {
-      // Refresh the live stream so Play starts close to "now".
-      radio.src = STREAM_URL + "?t=" + Date.now();
       await radio.play();
-      button.textContent = "⏸ Pause";
+      playButton.textContent = "Ⅱ Pause";
       statusText.textContent = "🔴 LIVE";
     } catch (e) {
       statusText.textContent = "Kunne ikke starte streamen";
     }
   } else {
     radio.pause();
-    button.textContent = "▶ Spill The Hits";
+    playButton.textContent = "▶ Spill The Hits";
     statusText.textContent = "Pauset";
   }
 });
 
-function getSources(data) {
-  const source = data && data.icestats && data.icestats.source;
-  if (!source) return [];
-  return Array.isArray(source) ? source : [source];
-}
+cover.onerror = () => { cover.src = FALLBACK; };
 
-function getTheHitsSource(data) {
-  const sources = getSources(data);
-  return sources.find(s => {
-    const listen = String(s.listenurl || "");
-    return listen.endsWith(MOUNT) || listen.includes(MOUNT);
-  }) || sources[0] || null;
-}
 
-function extractTitle(source) {
-  if (!source) return "";
-
-  if (typeof source.title === "string" && source.title.trim()) {
-    return source.title.trim();
-  }
-
-  const playlist = source.playlist;
-  if (playlist) {
-    let tracks = playlist.track ?? playlist.TrackList ?? playlist.trackList;
-
-    // Icecast can expose track as an object, array, or nested TrackList object.
-    if (tracks && !Array.isArray(tracks) && tracks.track) tracks = tracks.track;
-    if (tracks && !Array.isArray(tracks) && tracks.Track) tracks = tracks.Track;
-
-    if (Array.isArray(tracks) && tracks.length) {
-      const t = tracks[tracks.length - 1];
-      if (typeof t === "string") return t;
-      if (t && typeof t.title === "string") return t.title;
-    }
-
-    if (tracks && typeof tracks.title === "string") return tracks.title;
-  }
-
-  // Last fallback: recursively look for a metadata title.
-  const metadata = source.metadata;
-  if (metadata && typeof metadata === "object") {
-    for (const [key, value] of Object.entries(metadata)) {
-      if (key.toLowerCase().includes("title") && typeof value === "string" && value.trim()) {
-        return value.trim();
-      }
-    }
-  }
-  return "";
-}
-
-const API_URL = "https://wave-margin-hawaiian-shopzilla.trycloudflare.com/api/status";
-let lastCover = "";
-
-function showCover(url) {
-  const cover = document.getElementById("cover");
-  const fallbackLogo = document.getElementById("fallbackLogo");
-
-  if (!url) {
-    cover.style.display = "none";
-    fallbackLogo.style.display = "block";
-    return;
-  }
-
-  if (url === lastCover) return;
-  lastCover = url;
-  cover.onload = () => {
-    cover.style.display = "block";
-    fallbackLogo.style.display = "none";
-  };
-  cover.onerror = () => {
-    cover.style.display = "none";
-    fallbackLogo.style.display = "block";
-  };
-  cover.src = url;
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function renderHistory(items) {
-  const list = document.getElementById("historyList");
-  if (!items || !items.length) {
-    list.textContent = "Ingen historikk ennå";
+  if (!Array.isArray(items) || items.length === 0) {
+    historyList.textContent = "Ingen historikk ennå";
     return;
   }
-  list.innerHTML = "";
-  items.slice(0, 5).forEach(title => {
-    const row = document.createElement("div");
-    row.className = "history-item";
-    row.textContent = "♪ " + title;
-    list.appendChild(row);
+  historyList.innerHTML = "";
+  items.slice(0,5).forEach(t => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.textContent = "♪ " + t;
+    historyList.appendChild(div);
   });
 }
 
-async function updateFromBot() {
+async function refreshStation() {
   try {
-    const response = await fetch(API_URL + "?t=" + Date.now(), {cache: "no-store"});
-    if (!response.ok) return false;
-    const data = await response.json();
+    const res = await fetch(API_URL + "?t=" + Date.now(), {cache:"no-store"});
+    if (!res.ok) throw new Error("API " + res.status);
+    const data = await res.json();
 
-    if (data.title) nowPlaying.textContent = data.title;
-    if (data.program) program.textContent = data.program;
-    showCover(data.cover || "");
-    renderHistory(data.history || []);
-    return true;
+    nowPlaying.textContent = data.title || "The Hits";
+    program.textContent = "📻 " + (data.program || "THE HITS");
+    nextSong.innerHTML = "<span>NESTE →</span> " + escapeHtml(data.next || "Ikke valgt ennå");
+    cover.src = data.cover || FALLBACK;
+    renderHistory(data.history);
   } catch (e) {
-    return false;
+    // Keep the player usable even if metadata is temporarily unavailable.
+    if (nowPlaying.textContent === "Henter låt...") {
+      nowPlaying.textContent = "The Hits";
+    }
   }
 }
 
-const volumeSlider = document.getElementById("volumeSlider");
-const volumeValue = document.getElementById("volumeValue");
-
-const savedVolume = localStorage.getItem("theHitsVolume");
-const initialVolume = savedVolume !== null ? Number(savedVolume) : 80;
-volumeSlider.value = initialVolume;
-radio.volume = initialVolume / 100;
-volumeValue.textContent = initialVolume + "%";
-
-volumeSlider.addEventListener("input", () => {
-  const value = Number(volumeSlider.value);
-  radio.volume = value / 100;
-  volumeValue.textContent = value + "%";
-  localStorage.setItem("theHitsVolume", String(value));
-});
-
-async function updateNowPlaying() {
-  if (await updateFromBot()) return;
-  try {
-    const response = await fetch(STATUS_URL + "?t=" + Date.now(), { cache: "no-store" });
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    const data = await response.json();
-    const source = getTheHitsSource(data);
-    const title = extractTitle(source);
-
-    const displayTitle = title || "THE HITS";
-    nowPlaying.textContent = displayTitle;
-    program.textContent = (source && (source.server_name || source.server_description)) || "THE HITS";
-
-  } catch (e) {
-    nowPlaying.textContent = "THE HITS";
-    program.textContent = "THE HITS";
-  }
-}
-
-updateNowPlaying();
-setInterval(updateNowPlaying, 7000);
-
+refreshStation();
+setInterval(refreshStation, 7000);
 </script>
 </body>
 </html>
