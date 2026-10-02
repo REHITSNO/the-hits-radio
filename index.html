@@ -61,6 +61,24 @@ button {
 }
 button:active { transform: scale(.985); }
 .status { min-height: 18px; margin-top: 13px; font-size: 12px; opacity: .6; }
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 4px;
+}
+.volume-icon { font-size: 18px; }
+.volume-control input[type="range"] {
+  flex: 1;
+  accent-color: #b8ff00;
+  cursor: pointer;
+}
+.volume-value {
+  min-width: 42px;
+  text-align: right;
+  font-size: 12px;
+  color: #aaa;
+}
 .history { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.08); text-align: left; }
 .history-title { color: #b8f20c; margin-bottom: 12px; }
 .history-item { padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
@@ -87,6 +105,11 @@ button:active { transform: scale(.985); }
   <audio id="radio" preload="none"></audio>
   <button id="playButton">▶ Spill The Hits</button>
   <div class="status" id="status">Klar til å spille</div>
+  <div class="volume-control">
+    <span class="volume-icon" id="volumeIcon">🔊</span>
+    <input id="volumeSlider" type="range" min="0" max="100" value="80" aria-label="Volum">
+    <span class="volume-value" id="volumeValue">80%</span>
+  </div>
   <section class="history">
     <div class="label history-title">SIST SPILT</div>
     <div id="historyList" class="history-list">Ingen historikk ennå</div>
@@ -231,6 +254,26 @@ async function updateFromBot() {
     return false;
   }
 }
+
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeValue = document.getElementById("volumeValue");
+const volumeIcon = document.getElementById("volumeIcon");
+
+const savedVolume = localStorage.getItem("theHitsVolume");
+if (savedVolume !== null) {
+  volumeSlider.value = savedVolume;
+}
+audio.volume = Number(volumeSlider.value) / 100;
+volumeValue.textContent = volumeSlider.value + "%";
+volumeIcon.textContent = audio.volume === 0 ? "🔇" : audio.volume < 0.5 ? "🔉" : "🔊";
+
+volumeSlider.addEventListener("input", () => {
+  const value = Number(volumeSlider.value);
+  audio.volume = value / 100;
+  volumeValue.textContent = value + "%";
+  volumeIcon.textContent = value === 0 ? "🔇" : value < 50 ? "🔉" : "🔊";
+  localStorage.setItem("theHitsVolume", String(value));
+});
 
 async function updateNowPlaying() {
   if (await updateFromBot()) return;
