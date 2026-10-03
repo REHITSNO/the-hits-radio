@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Hits</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#152400 0,#0b0d0b 45%,#070707 100%);font-family:Arial,sans-serif;color:#fff;display:flex;justify-content:center;padding:24px 14px}
+.player{width:390px;max-width:100%;background:#181918;border-radius:30px;padding:28px 24px;box-shadow:0 18px 50px #0008;text-align:center}
+.top-logo{width:190px;height:72px;object-fit:cover;object-position:center;border-radius:12px}
+.tagline{font-size:12px;color:#aaa;margin:7px 0 17px}
+.live{font-weight:900;color:#b7ff00;font-size:18px;margin-bottom:24px}
+.artwork{width:100%;aspect-ratio:1/1;position:relative;border-radius:22px;overflow:hidden;background:#0c0c0c}
+.artwork img{width:100%;height:100%;object-fit:cover;display:block}
+.label{margin-top:20px;font-size:12px;font-weight:900;letter-spacing:1.4px;color:#969096}
+.title{font-size:22px;font-weight:900;line-height:1.22;margin:10px 0 26px}
+.program{font-size:14px;color:#bbb;margin-bottom:25px}
+button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;color:#050505;font-size:17px;font-weight:900;cursor:pointer}
+.status{font-size:12px;color:#aaa;margin:12px 0 20px}
+.volume{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid #b7ff0040;border-radius:14px;background:#ffffff08}
+.volume input{flex:1;min-width:0;accent-color:#b7ff00}
+.volume-value{width:40px;text-align:right;color:#b7ff00;font-size:12px;font-weight:900}
+.history{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
+.history-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:12px}
+.history-item{display:flex;gap:10px;font-size:14px;padding:9px 0;border-bottom:1px solid #ffffff0d;line-height:1.25}\n.history-time{width:42px;flex:0 0 42px;color:#b7ff00;font-weight:900}\n.history-link{display:block;margin-top:15px;padding:12px 14px;border:1px solid #b7ff004d;border-radius:12px;color:#b7ff00;text-align:center;text-decoration:none;font-size:13px;font-weight:900;background:#b7ff0008}
+
+.next-song{
+  margin:-14px 0 24px;
+  font-size:13px;
+  line-height:1.35;
+  color:#b9b9b9;
+}
+.next-song span{
+  color:#b7ff00;
+  font-weight:900;
+  letter-spacing:.7px;
+}
+
+.schedule{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
+.schedule-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:14px}
+.schedule-day{font-size:11px;font-weight:900;color:#aaa;letter-spacing:1px;margin:18px 0 7px}
+.schedule-item{display:flex;gap:12px;align-items:center;font-size:13px;padding:9px 8px;border-bottom:1px solid #ffffff0d;border-radius:9px}
+.schedule-time{width:72px;flex:0 0 72px;color:#929292;font-weight:700}
+.schedule-name{font-weight:700}
+.schedule-item.on-air{background:#b7ff0012;border:1px solid #b7ff004d}
+.schedule-item.on-air .schedule-time{color:#b7ff00}
+.schedule-item.on-air .schedule-name::after{content:"  • LIVE";color:#b7ff00;font-size:10px;font-weight:900}
+
+</style>
+</head>
+<body>
+<main class="player">
+  <img class="top-logo" src="the-hits-logo.png" alt="The Hits">
+  <div class="tagline">No repeats. Just beats.</div>
+  <div id="liveProgram" class="live">● THE HITS</div>
+
+  <div class="artwork">
+    <img id="cover" src="the-hits-logo.png" alt="Albumcover">
+  </div>
+
+  <div class="label">🎵 NÅ SPILLES</div>
+  <div id="nowPlaying" class="title">Henter låt...</div>
+  <div id="nextSong" class="next-song"><span>NESTE →</span> Henter neste låt...</div>
+
+  <audio id="radio" preload="none"></audio>
+  <button id="playButton">▶ Spill The Hits</button>
+  <div id="status" class="status">Klar til å spille</div>
+
+  <div class="volume">
+    <span>🔉</span>
+    <input id="volumeSlider" type="range" min="0" max="100" value="80" aria-label="Volum">
+    <span>🔊</span>
+    <span id="volumeValue" class="volume-value">80%</span>
+  </div>
+
+  <section class="history">
+    <div class="history-heading">SIST SPILT</div>
+    <div id="historyList">Ingen historikk ennå</div>
+  </section>
+  <section class="schedule">
+    <div class="schedule-heading">SENDEPLAN</div>
+    <div class="schedule-day">MANDAG–FREDAG</div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="0" data-end="360"><span class="schedule-time">00–06</span><span class="schedule-name">The Hits NON STOP NIGHT</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="360" data-end="720"><span class="schedule-time">06–12</span><span class="schedule-name">Dance Morgen</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="720" data-end="900"><span class="schedule-time">12–15</span><span class="schedule-name">Rush Hits</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="900" data-end="960"><span class="schedule-time">15–16</span><span class="schedule-name">The Hits NON STOP</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="960" data-end="1080"><span class="schedule-time">16–18</span><span class="schedule-name">The Hits Starz</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="1080" data-end="1440"><span class="schedule-time">18–00</span><span class="schedule-name">The Hits NON STOP</span></div>
+    <div class="schedule-day">LØRDAG–SØNDAG</div>
+    <div class="schedule-item" data-days="0,6" data-start="0" data-end="360"><span class="schedule-time">00–06</span><span class="schedule-name">Non Stop HITS</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="360" data-end="720"><span class="schedule-time">06–12</span><span class="schedule-name">Non Stop Helg</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="720" data-end="900"><span class="schedule-time">12–15</span><span class="schedule-name">The Hits Starz</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="900" data-end="1080"><span class="schedule-time">15–18</span><span class="schedule-name">Non Stop Helg</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="1080" data-end="1320"><span class="schedule-time">18–22</span><span class="schedule-name">The Hits MIX</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="1320" data-end="1380"><span class="schedule-time">22–23</span><span class="schedule-name">The Hits NON STOP</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="1380" data-end="1440"><span class="schedule-time">23–00</span><span class="schedule-name">Non Stop HITS</span></div>
+  </section>
+
+</main>
+
+<script>
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
+const FALLBACK = "the-hits-logo.png";
+
+const radio = document.getElementById("radio");
+const playButton = document.getElementById("playButton");
+const statusText = document.getElementById("status");
+const nowPlaying = document.getElementById("nowPlaying");
+const liveProgram = document.getElementById("liveProgram");
+const nextSong = document.getElementById("nextSong");
+const cover = document.getElementById("cover");
+const historyList = document.getElementById("historyList");\nconst historyLink = document.getElementById("historyLink");\nhistoryLink.href = "history.html?api=" + encodeURIComponent(API_URL);
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeValue = document.getElementById("volumeValue");
+
+radio.src = STREAM_URL;
+
+const savedVolume = localStorage.getItem("theHitsVolume");
+const initialVolume = savedVolume === null ? 80 : Number(savedVolume);
+volumeSlider.value = initialVolume;
+radio.volume = initialVolume / 100;
+volumeValue.textContent = initialVolume + "%";
+
+volumeSlider.addEventListener("input", () => {
+  const v = Number(volumeSlider.value);
+  radio.volume = v / 100;
+  volumeValue.textContent = v + "%";
+  localStorage.setItem("theHitsVolume", String(v));
+});
+
+playButton.addEventListener("click", async () => {
+  if (radio.paused) {
+    try {
+      await radio.play();
+      playButton.textContent = "Ⅱ Pause";
+      statusText.textContent = "🔴 LIVE";
+    } catch (e) {
+      statusText.textContent = "Kunne ikke starte streamen";
+    }
+  } else {
+    radio.pause();
+    playButton.textContent = "▶ Spill The Hits";
+    statusText.textContent = "Pauset";
+  }
+});
+
+cover.onerror = () => { cover.src = FALLBACK; };
+
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function renderHistory(items) {
+  if (!Array.isArray(items) || items.length === 0) {
+    historyList.textContent = "Ingen historikk ennå";
+    return;
+  }
+  historyList.innerHTML = "";
+  items.slice(0,5).forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    const time = document.createElement("span");
+    time.className = "history-time";
+    if (item && typeof item === "object" && item.played_at) {
+      const d = new Date(item.played_at);
+      time.textContent = d.toLocaleTimeString("no-NO", {hour:"2-digit", minute:"2-digit"});
+    } else {
+      time.textContent = "—";
+    }
+    const song = document.createElement("span");
+    song.textContent = "♪ " + (item && typeof item === "object" ? item.title : item);
+    div.appendChild(time);
+    div.appendChild(song);
+    historyList.appendChild(div);
+  });
+}
+
+async function refreshStation() {
+  try {
+    const res = await fetch(API_URL + "?t=" + Date.now(), {cache:"no-store"});
+    if (!res.ok) throw new Error("API " + res.status);
+    const data = await res.json();
+
+    nowPlaying.textContent = data.title || "The Hits";
+    liveProgram.textContent = "● " + (data.program || "THE HITS").toUpperCase();
+    nextSong.innerHTML = "<span>NESTE →</span> " + escapeHtml(data.next || "Ikke valgt ennå");
+    cover.src = data.cover || FALLBACK;
+    renderHistory(data.history);
+  } catch (e) {
+    // Keep the player usable even if metadata is temporarily unavailable.
+    if (nowPlaying.textContent === "Henter låt...") {
+      nowPlaying.textContent = "The Hits";
+    }
+  }
+}
+
+
+function updateScheduleLive() {
+  const now = new Date();
+  const day = now.getDay();
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  document.querySelectorAll(".schedule-item").forEach(item => {
+    const days = item.dataset.days.split(",").map(Number);
+    const start = Number(item.dataset.start);
+    const end = Number(item.dataset.end);
+    item.classList.toggle("on-air", days.includes(day) && minutes >= start && minutes < end);
+  });
+}
+updateScheduleLive();
+setInterval(updateScheduleLive, 60000);
+
+refreshStation();
+setInterval(refreshStation, 7000);
+</script>
+</body>
+</html>
