@@ -38,7 +38,7 @@
 
 <div class="grid">
 <section class="card onair"><div class="title">📻 PÅ LUFTA</div><div id="onAirName" class="program-name">The Hits</div><div id="onAirTag" class="program-tag">Only the biggest hits.</div><div class="coming">⏭️ Kommer: <b id="comingUp">–</b></div></section>
-<section id="powerCard" class="card power"><div class="title">⚡ POWER HIT</div><div id="powerHit" class="program-name">Coming soon</div><div class="program-tag">Låten vi spiller ekstra mye akkurat nå.</div></section>
+<section id="powerCard" class="card power"><div class="title">⚡ POWER HIT</div><div id="powerHit" class="program-name">Kommer snart</div><div class="program-tag">Låten vi spiller ekstra mye akkurat nå.</div></section>
 </div>
 
 <div class="grid">
@@ -68,23 +68,22 @@
 const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
 const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
-const LIVE_STREAM_URL = (()=>{try{const a=new URL(API_URL);return a.origin+"/thehits"}catch(e){return STREAM_URL}})();
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let voter=localStorage.getItem("theHitsWebVoter");if(!voter){voter=(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random());localStorage.setItem("theHitsWebVoter",voter)}
-const radio=$("radio");radio.src=LIVE_STREAM_URL;localStorage.setItem("theHitsStream",LIVE_STREAM_URL);
+const radio=$("radio");radio.src=STREAM_URL;localStorage.setItem("theHitsStream",STREAM_URL);
 let volume=Number(localStorage.getItem("theHitsVolume")??80);$("vol").value=volume;radio.volume=volume/100;
 $("vol").oninput=()=>{radio.volume=Number($("vol").value)/100;localStorage.setItem("theHitsVolume",$("vol").value)}
 async function play(){try{await radio.play();$("play").textContent="Ⅱ Pause";$("miniPlay").textContent="Ⅱ";localStorage.setItem("theHitsPlaying","1")}catch(e){}}
 function pause(){radio.pause();$("play").textContent="▶ Spill radio";$("miniPlay").textContent="▶";localStorage.setItem("theHitsPlaying","0")}
 $("play").onclick=()=>radio.paused?play():pause();$("miniPlay").onclick=()=>radio.paused?play():pause();
 if(localStorage.getItem("theHitsPlaying")==="1")play();
-const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(LIVE_STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
+const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
 const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","The Hits MIX":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
 async function status(){
- try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Coming soon";renderRecent(d.history||[])}
+ try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Kommer snart";renderRecent(d.history||[])}
  catch(e){$("song").textContent="Kunne ikke hente låt akkurat nå."}
 }
 function renderRecent(items){const box=$("recent");box.innerHTML="";if(!items.length){box.innerHTML='<span class="muted">Historikken fylles opp når radioen spiller.</span>';return}items.slice(0,10).forEach(x=>{let el=document.createElement("div");el.className="recentcard";el.innerHTML='<img src="'+esc(x.cover||FALLBACK)+'" onerror="this.src=\''+FALLBACK+'\'"><div>'+esc(x.title||"")+'</div>';box.appendChild(el)})}
