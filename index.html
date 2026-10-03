@@ -49,6 +49,15 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
 .schedule-item.on-air .schedule-time{color:#b7ff00}
 .schedule-item.on-air .schedule-name::after{content:"  • LIVE";color:#b7ff00;font-size:10px;font-weight:900}
 
+
+.request-box{border-top:1px solid #ffffff12;margin-top:24px;padding-top:22px;text-align:left}
+.request-heading{color:#b7ff00;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:10px}
+.request-sub{font-size:12px;color:#999;margin-bottom:12px}
+.request-search{display:flex;gap:8px}.request-search input{min-width:0;flex:1;background:#0d0e0d;border:1px solid #ffffff18;color:#fff;border-radius:12px;padding:12px}
+.request-search button,.request-result button{border:0;border-radius:11px;background:#b7ff00;color:#080808;font-weight:900;padding:10px 12px;cursor:pointer}
+.request-results,.request-queue{margin-top:12px}.request-result,.queue-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px;border-bottom:1px solid #ffffff0d;font-size:13px}
+.request-result .recent{color:#888;font-size:11px}.request-message{font-size:12px;margin-top:10px;color:#b7ff00;min-height:15px}.queue-title{font-size:11px;color:#999;font-weight:900;margin-top:18px}
+
 </style>
 </head>
 <body>
@@ -81,6 +90,17 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
     <div id="historyList">Ingen historikk ennå</div>
     <a id="historyLink" class="history-link" href="history.html">🕘 Se hele spillehistorikken →</a>
   </section>
+
+  <section class="request-box">
+    <div class="request-heading">🎵 ØNSK EN LÅT</div>
+    <div class="request-sub">Søk blant låtene som allerede finnes i The Hits-biblioteket.</div>
+    <div class="request-search"><input id="requestQuery" type="search" placeholder="Artist eller låt..." autocomplete="off"><button id="requestSearch">Søk</button></div>
+    <div id="requestMessage" class="request-message"></div>
+    <div id="requestResults" class="request-results"></div>
+    <div class="queue-title">AKTIVE ØNSKER</div>
+    <div id="requestQueue" class="request-queue">Ingen ønsker akkurat nå</div>
+  </section>
+
   <section class="schedule">
     <div class="schedule-heading">SENDEPLAN</div>
     <div class="schedule-day">MANDAG–FREDAG</div>
@@ -103,9 +123,54 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
 </main>
 
 <script>
-const STREAM_URL = "https://router-warrant-renew-plymouth.trycloudflare.com/thehits";
-const API_URL = "https://clinics-harry-sculpture-monthly.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const FALLBACK = "the-hits-logo.png";
+
+const REQUEST_API = API_URL.replace(/\/api\/status$/, "");
+let webVoter = localStorage.getItem("theHitsWebVoter");
+if (!webVoter) {
+  webVoter = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random());
+  localStorage.setItem("theHitsWebVoter", webVoter);
+}
+const rq=document.getElementById("requestQuery"), rr=document.getElementById("requestResults"), rm=document.getElementById("requestMessage"), rqueue=document.getElementById("requestQueue");
+async function searchRequests(){
+  const q=rq.value.trim(); rr.innerHTML=""; rm.textContent="";
+  if(q.length<2){rm.textContent="Skriv minst 2 tegn.";return}
+  try{
+    const r=await fetch(REQUEST_API+"/api/search?q="+encodeURIComponent(q)+"&t="+Date.now(),{cache:"no-store"});
+    const d=await r.json();
+    if(!d.results?.length){rr.textContent="Ingen treff.";return}
+    for(const x of d.results){
+      const row=document.createElement("div"); row.className="request-result";
+      const name=document.createElement("div"); name.textContent=x.title;
+      const b=document.createElement("button");
+      if(x.too_recent){b.textContent="Spilt nylig";b.disabled=true;b.style.opacity=".45"}else{b.textContent="Ønsk";b.onclick=()=>sendRequest(x.title,b)}
+      row.append(name,b);rr.appendChild(row);
+    }
+  }catch(e){rm.textContent="Kunne ikke søke akkurat nå."}
+}
+async function sendRequest(title,button){
+  button.disabled=true;
+  try{
+    const r=await fetch(REQUEST_API+"/api/request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,voter:webVoter})});
+    const d=await r.json(); rm.textContent=(d.ok?"✓ ":"")+(d.message||"Noe gikk galt.");
+    await loadRequestQueue();
+  }catch(e){rm.textContent="Kunne ikke sende ønsket."}
+  button.disabled=false;
+}
+async function loadRequestQueue(){
+  try{
+    const r=await fetch(REQUEST_API+"/api/requests?t="+Date.now(),{cache:"no-store"}),d=await r.json();
+    rqueue.innerHTML="";
+    if(!d.requests?.length){rqueue.textContent="Ingen ønsker akkurat nå";return}
+    for(const x of d.requests){const row=document.createElement("div");row.className="queue-row";row.innerHTML="<span>"+escapeHtml(x.title)+"</span><strong>👍 "+Number(x.votes||0)+"</strong>";rqueue.appendChild(row)}
+  }catch(e){}
+}
+document.getElementById("requestSearch").onclick=searchRequests;
+rq.addEventListener("keydown",e=>{if(e.key==="Enter")searchRequests()});
+loadRequestQueue(); setInterval(loadRequestQueue,15000);
+
 
 const radio = document.getElementById("radio");
 const playButton = document.getElementById("playButton");
@@ -116,7 +181,8 @@ const nextSong = document.getElementById("nextSong");
 const cover = document.getElementById("cover");
 const historyList = document.getElementById("historyList");
 const historyLink = document.getElementById("historyLink");
-historyLink.href = "history.html?api=" + encodeURIComponent(API_URL);
+localStorage.setItem("theHitsStream", STREAM_URL);
+historyLink.href = "history.html?api=" + encodeURIComponent(API_URL) + "&stream=" + encodeURIComponent(STREAM_URL);
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeValue = document.getElementById("volumeValue");
 
@@ -139,6 +205,7 @@ playButton.addEventListener("click", async () => {
   if (radio.paused) {
     try {
       await radio.play();
+      localStorage.setItem("theHitsPlaying","1");
       playButton.textContent = "Ⅱ Pause";
       statusText.textContent = "🔴 LIVE";
     } catch (e) {
@@ -146,6 +213,7 @@ playButton.addEventListener("click", async () => {
     }
   } else {
     radio.pause();
+    localStorage.setItem("theHitsPlaying","0");
     playButton.textContent = "▶ Spill The Hits";
     statusText.textContent = "Pauset";
   }
