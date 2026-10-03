@@ -33,12 +33,12 @@
 <section class="hero">
 <img class="logo" src="the-hits-logo.png" alt="The Hits">
 <div><span class="live"><span class="dot"></span> THE HITS • LIVE</span></div>
-<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">NOW PLAYING</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><button id="fav" class="btn secondary">♡ Favoritt</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div><div id="favMsg" class="msg"></div></div></div>
+<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">SPILLES NÅ</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><button id="fav" class="btn secondary">♡ Favoritt</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div><div id="favMsg" class="msg"></div></div></div>
 </section>
 
 <div class="grid">
-<section class="card onair"><div class="title">📻 ON AIR</div><div id="onAirName" class="program-name">The Hits</div><div id="onAirTag" class="program-tag">Only the biggest hits.</div><div class="coming">⏭️ Coming up: <b id="comingUp">–</b></div></section>
-<section id="powerCard" class="card power"><div class="title">⚡ POWER HIT</div><div id="powerHit" class="program-name">Coming soon</div><div class="program-tag">The track we're turning up right now.</div></section>
+<section class="card onair"><div class="title">📻 PÅ LUFTA</div><div id="onAirName" class="program-name">The Hits</div><div id="onAirTag" class="program-tag">Only the biggest hits.</div><div class="coming">⏭️ Kommer: <b id="comingUp">–</b></div></section>
+<section id="powerCard" class="card power"><div class="title">⚡ POWER HIT</div><div id="powerHit" class="program-name">Coming soon</div><div class="program-tag">Låten vi spiller ekstra mye akkurat nå.</div></section>
 </div>
 
 <div class="grid">
@@ -51,10 +51,10 @@
 <section class="card"><div class="title">❤️ MINE FAVORITTER</div><div id="favorites" class="muted">Ingen favoritter ennå.</div></section>
 </div>
 
-<section class="card" style="margin-top:14px"><div class="title">🕘 RECENTLY ON THE HITS</div><div id="recent" class="recentstrip"></div></section>
+<section class="card" style="margin-top:14px"><div class="title">🕘 NYLIG SPILT PÅ THE HITS</div><div id="recent" class="recentstrip"></div></section>
 
 <section class="card" style="margin-top:14px">
-<div class="programs2-head"><div><div class="title" style="margin-bottom:4px">📅 PROGRAMMER</div><div id="todayTitle" class="programs2-day">I DAG</div><div class="programs2-sub">Today's shows on The Hits</div></div><button id="scheduleToggle" class="btn secondary">Se hele sendeplanen</button></div>
+<div class="programs2-head"><div><div class="title" style="margin-bottom:4px">📅 PROGRAMMER</div><div id="todayTitle" class="programs2-day">I DAG</div><div class="programs2-sub">Dagens programmer på The Hits</div></div><button id="scheduleToggle" class="btn secondary">Se hele sendeplanen</button></div>
 <div id="todayPrograms" class="program-cards"></div>
 <div id="fullSchedule" class="full-schedule"></div>
 </section>
@@ -65,21 +65,22 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://earlier-refrigerator-end-ata.trycloudflare.com/thehits";
-const API_URL = "https://guild-vernon-trembl-month.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
+const LIVE_STREAM_URL = (()=>{try{const a=new URL(API_URL);return a.origin+"/thehits"}catch(e){return STREAM_URL}})();
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let voter=localStorage.getItem("theHitsWebVoter");if(!voter){voter=(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random());localStorage.setItem("theHitsWebVoter",voter)}
-const radio=$("radio");radio.src=STREAM_URL;localStorage.setItem("theHitsStream",STREAM_URL);
+const radio=$("radio");radio.src=LIVE_STREAM_URL;localStorage.setItem("theHitsStream",LIVE_STREAM_URL);
 let volume=Number(localStorage.getItem("theHitsVolume")??80);$("vol").value=volume;radio.volume=volume/100;
 $("vol").oninput=()=>{radio.volume=Number($("vol").value)/100;localStorage.setItem("theHitsVolume",$("vol").value)}
 async function play(){try{await radio.play();$("play").textContent="Ⅱ Pause";$("miniPlay").textContent="Ⅱ";localStorage.setItem("theHitsPlaying","1")}catch(e){}}
 function pause(){radio.pause();$("play").textContent="▶ Spill radio";$("miniPlay").textContent="▶";localStorage.setItem("theHitsPlaying","0")}
 $("play").onclick=()=>radio.paused?play():pause();$("miniPlay").onclick=()=>radio.paused?play():pause();
 if(localStorage.getItem("theHitsPlaying")==="1")play();
-const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
+const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(LIVE_STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
 const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","The Hits MIX":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
 async function status(){
