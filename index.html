@@ -65,8 +65,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://pod-clusters-coat-heart.trycloudflare.com/thehits";
-const API_URL = "https://receives-consequence-adam-musical.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -80,7 +80,7 @@ function pause(){radio.pause();$("play").textContent="▶ Spill radio";$("miniPl
 $("play").onclick=()=>radio.paused?play():pause();$("miniPlay").onclick=()=>radio.paused?play():pause();
 if(localStorage.getItem("theHitsPlaying")==="1")play();
 const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
-const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","The Hits MIX":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
+const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
 async function status(){
  try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Kommer snart";renderRecent(d.history||[])}
@@ -103,7 +103,7 @@ const PROGRAMS={
  "The Hits NON STOP":{img:"the-hits-non-stop.png",tag:"The biggest hits — non stop."},
  "The Hits NON STOP NIGHT":{img:"non-stop-night.png",tag:"The biggest hits through the night."},
  "Non Stop Helg":{img:"non-stop-helg.png",tag:"The perfect weekend soundtrack."},
- "The Hits MIX":{img:"dance-mix.png",tag:"The hottest dance hits — in one mix."}
+ "Dance Mix":{img:"dance-mix.png",tag:"The hottest dance hits — in one mix."}
 };
 const WEEKDAY=[
  ["00–06","The Hits NON STOP NIGHT"],["06–12","Dance Morgen"],["12–15","Rush Hits"],
@@ -111,7 +111,7 @@ const WEEKDAY=[
 ];
 const WEEKEND=[
  ["00–06","The Hits NON STOP"],["06–12","Non Stop Helg"],["12–15","The Hits Starz"],
- ["15–18","Non Stop Helg"],["18–22","The Hits MIX"],["22–00","The Hits NON STOP"]
+ ["15–18","Non Stop Helg"],["18–22","Dance Mix"],["22–00","The Hits NON STOP"]
 ];
 const DAYNAMES=["SØNDAG","MANDAG","TIRSDAG","ONSDAG","TORSDAG","FREDAG","LØRDAG"];
 function mins(t){let [h,m]=(t==="00"?"24:00":t).split(":").map(Number);return h*60+(m||0)}
