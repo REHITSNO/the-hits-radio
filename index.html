@@ -53,7 +53,7 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
 <main class="player">
   <img class="top-logo" src="the-hits-logo.png" alt="The Hits">
   <div class="tagline">No repeats. Just beats.</div>
-  <div class="live">● LIVE RADIO</div>
+  <div id="liveProgram" class="live">● THE HITS</div>
 
   <div class="artwork">
     <img id="cover" src="the-hits-logo.png" alt="Albumcover">
@@ -110,6 +110,7 @@ const playButton = document.getElementById("playButton");
 const statusText = document.getElementById("status");
 const nowPlaying = document.getElementById("nowPlaying");
 const program = document.getElementById("program");
+const liveProgram = document.getElementById("liveProgram");
 const nextSong = document.getElementById("nextSong");
 const cover = document.getElementById("cover");
 const historyList = document.getElementById("historyList");
@@ -181,6 +182,7 @@ async function refreshStation() {
 
     nowPlaying.textContent = data.title || "The Hits";
     program.textContent = "📻 " + (data.program || "THE HITS");
+    liveProgram.textContent = "● " + (data.program || "THE HITS").toUpperCase();
     nextSong.innerHTML = "<span>NESTE →</span> " + escapeHtml(data.next || "Ikke valgt ennå");
     cover.src = data.cover || FALLBACK;
     renderHistory(data.history);
