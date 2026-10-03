@@ -1,297 +1,96 @@
 <!doctype html>
-<html lang="no">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Hits</title>
+<html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Hits • Web 2.0</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#152400 0,#0b0d0b 45%,#070707 100%);font-family:Arial,sans-serif;color:#fff;display:flex;justify-content:center;padding:24px 14px}
-.player{width:390px;max-width:100%;background:#181918;border-radius:30px;padding:28px 24px;box-shadow:0 18px 50px #0008;text-align:center}
-.top-logo{width:190px;height:72px;object-fit:cover;object-position:center;border-radius:12px}
-.tagline{font-size:12px;color:#aaa;margin:7px 0 17px}
-.live{font-weight:900;color:#b7ff00;font-size:18px;margin-bottom:24px}
-.artwork{width:100%;aspect-ratio:1/1;position:relative;border-radius:22px;overflow:hidden;background:#0c0c0c}
-.artwork img{width:100%;height:100%;object-fit:cover;display:block}
-.label{margin-top:20px;font-size:12px;font-weight:900;letter-spacing:1.4px;color:#969096}
-.title{font-size:22px;font-weight:900;line-height:1.22;margin:10px 0 26px}
-.program{font-size:14px;color:#bbb;margin-bottom:25px}
-button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;color:#050505;font-size:17px;font-weight:900;cursor:pointer}
-.status{font-size:12px;color:#aaa;margin:12px 0 20px}
-.volume{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1px solid #b7ff0040;border-radius:14px;background:#ffffff08}
-.volume input{flex:1;min-width:0;accent-color:#b7ff00}
-.volume-value{width:40px;text-align:right;color:#b7ff00;font-size:12px;font-weight:900}
-.history{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
-.history-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:12px}
-.history-item{display:flex;gap:10px;font-size:14px;padding:9px 0;border-bottom:1px solid #ffffff0d;line-height:1.25}
-.history-time{width:42px;flex:0 0 42px;color:#b7ff00;font-weight:900}
-.history-link{display:block;margin-top:15px;padding:12px 14px;border:1px solid #b7ff004d;border-radius:12px;color:#b7ff00;text-align:center;text-decoration:none;font-size:13px;font-weight:900;background:#b7ff0008}
+*{box-sizing:border-box}body{margin:0;background:#080a08;color:#f7f7f7;font-family:Arial,Helvetica,sans-serif}button,input{font:inherit}
+.wrap{max-width:980px;margin:auto;padding:18px 14px 110px}.hero{background:radial-gradient(circle at 50% 0,#b7ff0024,transparent 42%),linear-gradient(180deg,#11150f,#090b09);border:1px solid #ffffff10;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 70px #000}
+.logo{width:min(420px,88%);max-height:150px;object-fit:contain}.live{display:inline-flex;align-items:center;gap:7px;color:#b7ff00;font-size:12px;font-weight:900;letter-spacing:1.5px}.dot{width:8px;height:8px;border-radius:50%;background:#b7ff00;box-shadow:0 0 12px #b7ff00;animation:pulse 1.3s infinite}@keyframes pulse{50%{opacity:.35}}
+.nowgrid{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;text-align:left;margin-top:18px}.cover{width:180px;height:180px;border-radius:18px;object-fit:cover;background:#111;border:1px solid #ffffff18}.eyebrow{font-size:11px;color:#9b9b9b;font-weight:900;letter-spacing:1.3px}.song{font-size:28px;font-weight:900;margin:5px 0 10px}.program{color:#b7ff00;font-weight:900}.next{font-size:13px;color:#aaa;margin-top:10px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}.btn{border:0;border-radius:13px;padding:12px 16px;font-weight:900;cursor:pointer}.primary{background:#b7ff00;color:#080a08}.secondary{background:#171a17;color:#fff;border:1px solid #ffffff14}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.card{background:#111411;border:1px solid #ffffff0e;border-radius:19px;padding:18px}.title{font-size:12px;color:#b7ff00;font-weight:900;letter-spacing:1.25px;margin-bottom:12px}.muted{color:#929292;font-size:12px}
+.onair{background:linear-gradient(135deg,#b7ff0015,#101310)}.program-name{font-size:21px;font-weight:900}.program-tag{font-size:12px;color:#aaa;margin-top:5px}.coming{margin-top:13px;border-top:1px solid #ffffff10;padding-top:11px;font-size:13px}
+.searchrow{display:grid;grid-template-columns:1fr 110px;gap:9px}.searchrow input{width:100%;min-width:0;height:48px;background:#202420!important;color:#fff!important;-webkit-text-fill-color:#fff!important;caret-color:#b7ff00;border:2px solid #4d5748;border-radius:13px;padding:0 15px;outline:none;font-size:15px}.searchrow input::placeholder{color:#aeb4aa;opacity:1}.searchrow input:focus{border-color:#b7ff00;box-shadow:0 0 0 3px #b7ff0020}.searchrow button{height:48px}
+.result,.queue,.toprow,.recent{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #ffffff0c}.thumb{width:48px;height:48px;border-radius:9px;object-fit:cover;background:#202420;flex:0 0 48px}.grow{min-width:0;flex:1}.rtitle{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.small{font-size:11px;color:#929292}.result button{padding:8px 10px}.msg{min-height:18px;color:#b7ff00;font-size:12px;margin-top:8px}.rank{width:25px;color:#b7ff00;font-weight:900}.count{font-size:12px;color:#aaa;font-weight:900}
+.recentstrip{display:flex;gap:11px;overflow:auto;padding-bottom:5px}.recentcard{min-width:125px;width:125px}.recentcard img{width:125px;height:125px;border-radius:13px;object-fit:cover;background:#202420}.recentcard div{font-size:11px;font-weight:800;margin-top:6px;line-height:1.25}
+.power{border-color:#ffdf0044;background:linear-gradient(135deg,#ffdf0012,#111411)}.power .title{color:#ffdf00}
+.schedule-item{display:flex;justify-content:space-between;gap:12px;padding:9px 3px;border-bottom:1px solid #ffffff0c;font-size:12px}.schedule-item.live-row{color:#b7ff00;font-weight:900}
+.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:min(950px,calc(100% - 20px));background:#0d100ded;border:1px solid #b7ff0040;backdrop-filter:blur(12px);border-radius:17px;padding:10px 12px;display:flex;align-items:center;gap:10px;z-index:20;box-shadow:0 10px 40px #000}.bottom img{width:45px;height:45px;border-radius:9px;object-fit:cover;background:#222}.bottom .info{min-width:0;flex:1}.bottom .track{font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bottom .p{font-size:10px;color:#999}.vol{width:90px}.nav{display:flex;gap:7px;justify-content:center;margin-top:16px}.nav a{color:#b7ff00;text-decoration:none;font-size:12px;font-weight:900}
+@media(max-width:680px){.wrap{padding:10px 10px 105px}.hero{padding:18px 14px}.nowgrid{grid-template-columns:1fr;text-align:center}.cover{width:165px;height:165px;margin:auto}.song{font-size:21px}.actions{justify-content:center}.grid{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr 95px}.vol{width:65px}.bottom{bottom:7px}.bottom .secondary{padding:10px}.card{padding:15px}}
+</style></head><body>
+<div class="wrap">
+<section class="hero">
+<img class="logo" src="the-hits-logo.png" alt="The Hits">
+<div><span class="live"><span class="dot"></span> THE HITS • LIVE</span></div>
+<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">NOW PLAYING</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><button id="fav" class="btn secondary">♡ Favoritt</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div><div id="favMsg" class="msg"></div></div></div>
+</section>
 
-.next-song{
-  margin:-14px 0 24px;
-  font-size:13px;
-  line-height:1.35;
-  color:#b9b9b9;
-}
-.next-song span{
-  color:#b7ff00;
-  font-weight:900;
-  letter-spacing:.7px;
-}
+<div class="grid">
+<section class="card onair"><div class="title">📻 ON AIR</div><div id="onAirName" class="program-name">The Hits</div><div id="onAirTag" class="program-tag">Only the biggest hits.</div><div class="coming">⏭️ Coming up: <b id="comingUp">–</b></div></section>
+<section id="powerCard" class="card power"><div class="title">⚡ POWER HIT</div><div id="powerHit" class="program-name">Coming soon</div><div class="program-tag">The track we're turning up right now.</div></section>
+</div>
 
-.schedule{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
-.schedule-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:14px}
-.schedule-day{font-size:11px;font-weight:900;color:#aaa;letter-spacing:1px;margin:18px 0 7px}
-.schedule-item{display:flex;gap:12px;align-items:center;font-size:13px;padding:9px 8px;border-bottom:1px solid #ffffff0d;border-radius:9px}
-.schedule-time{width:72px;flex:0 0 72px;color:#929292;font-weight:700}
-.schedule-name{font-weight:700}
-.schedule-item.on-air{background:#b7ff0012;border:1px solid #b7ff004d}
-.schedule-item.on-air .schedule-time{color:#b7ff00}
-.schedule-item.on-air .schedule-name::after{content:"  • LIVE";color:#b7ff00;font-size:10px;font-weight:900}
+<div class="grid">
+<section class="card"><div class="title">🎵 ØNSK EN LÅT</div><div class="muted" style="margin-bottom:10px">Søk i The Hits-biblioteket og legg låten i samme ønskekø som Discord.</div><div class="searchrow"><input id="rq" type="search" placeholder="🔍 Søk etter artist eller låt…" autocomplete="off"><button id="searchBtn" class="btn primary">Søk</button></div><div id="requestMsg" class="msg"></div><div id="results"></div></section>
+<section class="card"><div class="title">🗳️ AKTIVE ØNSKER</div><div id="queue" class="muted">Ingen ønsker akkurat nå.</div></section>
+</div>
 
+<div class="grid">
+<section class="card"><div class="title">🔥 THE HITS TOP 10</div><div id="top10" class="muted">Henter topplisten…</div></section>
+<section class="card"><div class="title">❤️ MINE FAVORITTER</div><div id="favorites" class="muted">Ingen favoritter ennå.</div></section>
+</div>
 
-.request-box{border-top:1px solid #ffffff12;margin-top:24px;padding-top:22px;text-align:left}
-.request-heading{color:#b7ff00;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:10px}
-.request-sub{font-size:12px;color:#999;margin-bottom:12px}
-.request-search{display:flex;gap:8px}.request-search input{min-width:0;flex:1;background:#0d0e0d;border:1px solid #ffffff18;color:#fff;border-radius:12px;padding:12px}
-.request-search button,.request-result button{border:0;border-radius:11px;background:#b7ff00;color:#080808;font-weight:900;padding:10px 12px;cursor:pointer}
-.request-results,.request-queue{margin-top:12px}.request-result,.queue-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px;border-bottom:1px solid #ffffff0d;font-size:13px}
-.request-result .recent{color:#888;font-size:11px}.request-message{font-size:12px;margin-top:10px;color:#b7ff00;min-height:15px}.queue-title{font-size:11px;color:#999;font-weight:900;margin-top:18px}
+<section class="card" style="margin-top:14px"><div class="title">🕘 RECENTLY ON THE HITS</div><div id="recent" class="recentstrip"></div></section>
 
-</style>
-</head>
-<body>
-<main class="player">
-  <img class="top-logo" src="the-hits-logo.png" alt="The Hits">
-  <div class="tagline">No repeats. Just beats.</div>
-  <div id="liveProgram" class="live">● THE HITS</div>
+<section class="card" style="margin-top:14px"><div class="title">📅 PROGRAMMER</div><div id="schedule">
+<div class="schedule-item" data-days="1,2,3,4,5" data-start="0" data-end="360"><span>00–06</span><b>NON STOP NIGHT 🌙</b></div>
+<div class="schedule-item" data-days="1,2,3,4,5" data-start="360" data-end="720"><span>06–12</span><b>DANCE MORGEN ☀️</b></div>
+<div class="schedule-item" data-days="1,2,3,4,5" data-start="720" data-end="900"><span>12–15</span><b>RUSH HITS ⚡</b></div>
+<div class="schedule-item" data-days="1,2,3,4,5" data-start="900" data-end="960"><span>15–16</span><b>NON STOP ▶</b></div>
+<div class="schedule-item" data-days="1,2,3,4,5" data-start="960" data-end="1080"><span>16–18</span><b>STARZ 📼</b></div>
+<div class="schedule-item" data-days="1,2,3,4,5" data-start="1080" data-end="1440"><span>18–00</span><b>NON STOP ▶</b></div>
+<div class="schedule-item" data-days="0,6" data-start="0" data-end="360"><span>00–06</span><b>NON STOP HITS ▶</b></div>
+<div class="schedule-item" data-days="0,6" data-start="360" data-end="720"><span>06–12</span><b>NON STOP HELG 🎉</b></div>
+<div class="schedule-item" data-days="0,6" data-start="720" data-end="900"><span>12–15</span><b>STARZ 📼</b></div>
+<div class="schedule-item" data-days="0,6" data-start="900" data-end="1080"><span>15–18</span><b>NON STOP HELG 🎉</b></div>
+<div class="schedule-item" data-days="0,6" data-start="1080" data-end="1320"><span>18–22</span><b>DANCE MIX 🎧</b></div>
+<div class="schedule-item" data-days="0,6" data-start="1320" data-end="1380"><span>22–23</span><b>NON STOP ▶</b></div>
+<div class="schedule-item" data-days="0,6" data-start="1380" data-end="1440"><span>23–00</span><b>NON STOP HITS ▶</b></div>
+</div></section>
+<div class="nav"><a id="historyBottom" href="history.html">Se hele spillehistorikken →</a></div>
+</div>
 
-  <div class="artwork">
-    <img id="cover" src="the-hits-logo.png" alt="Albumcover">
-  </div>
-
-  <div class="label">🎵 NÅ SPILLES</div>
-  <div id="nowPlaying" class="title">Henter låt...</div>
-  <div id="nextSong" class="next-song"><span>NESTE →</span> Henter neste låt...</div>
-
-  <audio id="radio" preload="none"></audio>
-  <button id="playButton">▶ Spill The Hits</button>
-  <div id="status" class="status">Klar til å spille</div>
-
-  <div class="volume">
-    <span>🔉</span>
-    <input id="volumeSlider" type="range" min="0" max="100" value="80" aria-label="Volum">
-    <span>🔊</span>
-    <span id="volumeValue" class="volume-value">80%</span>
-  </div>
-
-  <section class="history">
-    <div class="history-heading">SIST SPILT</div>
-    <div id="historyList">Ingen historikk ennå</div>
-    <a id="historyLink" class="history-link" href="history.html">🕘 Se hele spillehistorikken →</a>
-  </section>
-
-  <section class="request-box">
-    <div class="request-heading">🎵 ØNSK EN LÅT</div>
-    <div class="request-sub">Søk blant låtene som allerede finnes i The Hits-biblioteket.</div>
-    <div class="request-search"><input id="requestQuery" type="search" placeholder="Artist eller låt..." autocomplete="off"><button id="requestSearch">Søk</button></div>
-    <div id="requestMessage" class="request-message"></div>
-    <div id="requestResults" class="request-results"></div>
-    <div class="queue-title">AKTIVE ØNSKER</div>
-    <div id="requestQueue" class="request-queue">Ingen ønsker akkurat nå</div>
-  </section>
-
-  <section class="schedule">
-    <div class="schedule-heading">SENDEPLAN</div>
-    <div class="schedule-day">MANDAG–FREDAG</div>
-    <div class="schedule-item" data-days="1,2,3,4,5" data-start="0" data-end="360"><span class="schedule-time">00–06</span><span class="schedule-name">The Hits NON STOP NIGHT</span></div>
-    <div class="schedule-item" data-days="1,2,3,4,5" data-start="360" data-end="720"><span class="schedule-time">06–12</span><span class="schedule-name">Dance Morgen</span></div>
-    <div class="schedule-item" data-days="1,2,3,4,5" data-start="720" data-end="900"><span class="schedule-time">12–15</span><span class="schedule-name">Rush Hits</span></div>
-    <div class="schedule-item" data-days="1,2,3,4,5" data-start="900" data-end="960"><span class="schedule-time">15–16</span><span class="schedule-name">The Hits NON STOP</span></div>
-    <div class="schedule-item" data-days="1,2,3,4,5" data-start="960" data-end="1080"><span class="schedule-time">16–18</span><span class="schedule-name">The Hits Starz</span></div>
-    <div class="schedule-item" data-days="1,2,3,4,5" data-start="1080" data-end="1440"><span class="schedule-time">18–00</span><span class="schedule-name">The Hits NON STOP</span></div>
-    <div class="schedule-day">LØRDAG–SØNDAG</div>
-    <div class="schedule-item" data-days="0,6" data-start="0" data-end="360"><span class="schedule-time">00–06</span><span class="schedule-name">Non Stop HITS</span></div>
-    <div class="schedule-item" data-days="0,6" data-start="360" data-end="720"><span class="schedule-time">06–12</span><span class="schedule-name">Non Stop Helg</span></div>
-    <div class="schedule-item" data-days="0,6" data-start="720" data-end="900"><span class="schedule-time">12–15</span><span class="schedule-name">The Hits Starz</span></div>
-    <div class="schedule-item" data-days="0,6" data-start="900" data-end="1080"><span class="schedule-time">15–18</span><span class="schedule-name">Non Stop Helg</span></div>
-    <div class="schedule-item" data-days="0,6" data-start="1080" data-end="1320"><span class="schedule-time">18–22</span><span class="schedule-name">The Hits MIX</span></div>
-    <div class="schedule-item" data-days="0,6" data-start="1320" data-end="1380"><span class="schedule-time">22–23</span><span class="schedule-name">The Hits NON STOP</span></div>
-    <div class="schedule-item" data-days="0,6" data-start="1380" data-end="1440"><span class="schedule-time">23–00</span><span class="schedule-name">Non Stop HITS</span></div>
-  </section>
-
-</main>
+<div class="bottom"><img id="miniCover" src="the-hits-logo.png"><button id="miniPlay" class="btn primary">▶</button><div class="info"><div id="miniTrack" class="track">The Hits</div><div id="miniProgram" class="p">LIVE</div></div><span>🔊</span><input id="vol" class="vol" type="range" min="0" max="100" value="80"></div>
+<audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://delivered-disclaimer-parliament-electro.trycloudflare.com/thehits";
-const API_URL = "https://pat-innovative-delivering-conference.trycloudflare.com/api/status";
-const FALLBACK = "the-hits-logo.png";
-
-const REQUEST_API = API_URL.replace(/\/api\/status$/, "");
-let webVoter = localStorage.getItem("theHitsWebVoter");
-if (!webVoter) {
-  webVoter = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random());
-  localStorage.setItem("theHitsWebVoter", webVoter);
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
+const BASE = API_URL.replace(/\/api\/status$/,"");
+const FALLBACK="the-hits-logo.png";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let voter=localStorage.getItem("theHitsWebVoter");if(!voter){voter=(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random());localStorage.setItem("theHitsWebVoter",voter)}
+const radio=$("radio");radio.src=STREAM_URL;localStorage.setItem("theHitsStream",STREAM_URL);
+let volume=Number(localStorage.getItem("theHitsVolume")??80);$("vol").value=volume;radio.volume=volume/100;
+$("vol").oninput=()=>{radio.volume=Number($("vol").value)/100;localStorage.setItem("theHitsVolume",$("vol").value)}
+async function play(){try{await radio.play();$("play").textContent="Ⅱ Pause";$("miniPlay").textContent="Ⅱ";localStorage.setItem("theHitsPlaying","1")}catch(e){}}
+function pause(){radio.pause();$("play").textContent="▶ Spill radio";$("miniPlay").textContent="▶";localStorage.setItem("theHitsPlaying","0")}
+$("play").onclick=()=>radio.paused?play():pause();$("miniPlay").onclick=()=>radio.paused?play():pause();
+if(localStorage.getItem("theHitsPlaying")==="1")play();
+const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
+const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","The Hits MIX":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
+let currentTitle="";
+async function status(){
+ try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Coming soon";renderRecent(d.history||[])}
+ catch(e){$("song").textContent="Kunne ikke hente låt akkurat nå."}
 }
-const rq=document.getElementById("requestQuery"), rr=document.getElementById("requestResults"), rm=document.getElementById("requestMessage"), rqueue=document.getElementById("requestQueue");
-async function searchRequests(){
-  const q=rq.value.trim(); rr.innerHTML=""; rm.textContent="";
-  if(q.length<2){rm.textContent="Skriv minst 2 tegn.";return}
-  try{
-    const r=await fetch(REQUEST_API+"/api/search?q="+encodeURIComponent(q)+"&t="+Date.now(),{cache:"no-store"});
-    const d=await r.json();
-    if(!d.results?.length){rr.textContent="Ingen treff.";return}
-    for(const x of d.results){
-      const row=document.createElement("div"); row.className="request-result";
-      const name=document.createElement("div"); name.textContent=x.title;
-      const b=document.createElement("button");
-      if(x.too_recent){b.textContent="Spilt nylig";b.disabled=true;b.style.opacity=".45"}else{b.textContent="Ønsk";b.onclick=()=>sendRequest(x.title,b)}
-      row.append(name,b);rr.appendChild(row);
-    }
-  }catch(e){rm.textContent="Kunne ikke søke akkurat nå."}
-}
-async function sendRequest(title,button){
-  button.disabled=true;
-  try{
-    const r=await fetch(REQUEST_API+"/api/request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,voter:webVoter})});
-    const d=await r.json(); rm.textContent=(d.ok?"✓ ":"")+(d.message||"Noe gikk galt.");
-    await loadRequestQueue();
-  }catch(e){rm.textContent="Kunne ikke sende ønsket."}
-  button.disabled=false;
-}
-async function loadRequestQueue(){
-  try{
-    const r=await fetch(REQUEST_API+"/api/requests?t="+Date.now(),{cache:"no-store"}),d=await r.json();
-    rqueue.innerHTML="";
-    if(!d.requests?.length){rqueue.textContent="Ingen ønsker akkurat nå";return}
-    for(const x of d.requests){const row=document.createElement("div");row.className="queue-row";row.innerHTML="<span>"+escapeHtml(x.title)+"</span><strong>👍 "+Number(x.votes||0)+"</strong>";rqueue.appendChild(row)}
-  }catch(e){}
-}
-document.getElementById("requestSearch").onclick=searchRequests;
-rq.addEventListener("keydown",e=>{if(e.key==="Enter")searchRequests()});
-loadRequestQueue(); setInterval(loadRequestQueue,15000);
-
-
-const radio = document.getElementById("radio");
-const playButton = document.getElementById("playButton");
-const statusText = document.getElementById("status");
-const nowPlaying = document.getElementById("nowPlaying");
-const liveProgram = document.getElementById("liveProgram");
-const nextSong = document.getElementById("nextSong");
-const cover = document.getElementById("cover");
-const historyList = document.getElementById("historyList");
-const historyLink = document.getElementById("historyLink");
-localStorage.setItem("theHitsStream", STREAM_URL);
-historyLink.href = "history.html?api=" + encodeURIComponent(API_URL) + "&stream=" + encodeURIComponent(STREAM_URL);
-const volumeSlider = document.getElementById("volumeSlider");
-const volumeValue = document.getElementById("volumeValue");
-
-radio.src = STREAM_URL;
-
-const savedVolume = localStorage.getItem("theHitsVolume");
-const initialVolume = savedVolume === null ? 80 : Number(savedVolume);
-volumeSlider.value = initialVolume;
-radio.volume = initialVolume / 100;
-volumeValue.textContent = initialVolume + "%";
-
-volumeSlider.addEventListener("input", () => {
-  const v = Number(volumeSlider.value);
-  radio.volume = v / 100;
-  volumeValue.textContent = v + "%";
-  localStorage.setItem("theHitsVolume", String(v));
-});
-
-playButton.addEventListener("click", async () => {
-  if (radio.paused) {
-    try {
-      await radio.play();
-      localStorage.setItem("theHitsPlaying","1");
-      playButton.textContent = "Ⅱ Pause";
-      statusText.textContent = "🔴 LIVE";
-    } catch (e) {
-      statusText.textContent = "Kunne ikke starte streamen";
-    }
-  } else {
-    radio.pause();
-    localStorage.setItem("theHitsPlaying","0");
-    playButton.textContent = "▶ Spill The Hits";
-    statusText.textContent = "Pauset";
-  }
-});
-
-cover.onerror = () => { cover.src = FALLBACK; };
-
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function renderHistory(items) {
-  if (!Array.isArray(items) || items.length === 0) {
-    historyList.textContent = "Ingen historikk ennå";
-    return;
-  }
-  historyList.innerHTML = "";
-  items.slice(0,5).forEach(item => {
-    const div = document.createElement("div");
-    div.className = "history-item";
-    const time = document.createElement("span");
-    time.className = "history-time";
-    if (item && typeof item === "object" && item.played_at) {
-      const d = new Date(item.played_at);
-      time.textContent = d.toLocaleTimeString("no-NO", {hour:"2-digit", minute:"2-digit"});
-    } else {
-      time.textContent = "—";
-    }
-    const song = document.createElement("span");
-    song.textContent = "♪ " + (item && typeof item === "object" ? item.title : item);
-    div.appendChild(time);
-    div.appendChild(song);
-    historyList.appendChild(div);
-  });
-}
-
-async function refreshStation() {
-  try {
-    const res = await fetch(API_URL + "?t=" + Date.now(), {cache:"no-store"});
-    if (!res.ok) throw new Error("API " + res.status);
-    const data = await res.json();
-
-    nowPlaying.textContent = data.title || "The Hits";
-    liveProgram.textContent = "● " + (data.program || "THE HITS").toUpperCase();
-    nextSong.innerHTML = "<span>NESTE →</span> " + escapeHtml(data.next || "Ikke valgt ennå");
-    cover.src = data.cover || FALLBACK;
-    renderHistory(data.history);
-  } catch (e) {
-    // Keep the player usable even if metadata is temporarily unavailable.
-    if (nowPlaying.textContent === "Henter låt...") {
-      nowPlaying.textContent = "The Hits";
-    }
-  }
-}
-
-
-function updateScheduleLive() {
-  const now = new Date();
-  const day = now.getDay();
-  const minutes = now.getHours() * 60 + now.getMinutes();
-  document.querySelectorAll(".schedule-item").forEach(item => {
-    const days = item.dataset.days.split(",").map(Number);
-    const start = Number(item.dataset.start);
-    const end = Number(item.dataset.end);
-    item.classList.toggle("on-air", days.includes(day) && minutes >= start && minutes < end);
-  });
-}
-updateScheduleLive();
-setInterval(updateScheduleLive, 60000);
-
-refreshStation();
-setInterval(refreshStation, 7000);
-</script>
-</body>
-</html>
+function renderRecent(items){const box=$("recent");box.innerHTML="";if(!items.length){box.innerHTML='<span class="muted">Historikken fylles opp når radioen spiller.</span>';return}items.slice(0,10).forEach(x=>{let el=document.createElement("div");el.className="recentcard";el.innerHTML='<img src="'+esc(x.cover||FALLBACK)+'" onerror="this.src=\''+FALLBACK+'\'"><div>'+esc(x.title||"")+'</div>';box.appendChild(el)})}
+async function favorite(){if(!currentTitle)return;let r=await fetch(BASE+"/api/favorite",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:currentTitle,voter})});let d=await r.json();$("favMsg").textContent=(d.ok?"♥ ":"")+(d.message||"");loadFavs()}
+$("fav").onclick=favorite;
+async function loadFavs(){try{let d=await (await fetch(BASE+"/api/favorites?voter="+encodeURIComponent(voter)+"&t="+Date.now(),{cache:"no-store"})).json();$("favorites").innerHTML=d.favorites?.length?d.favorites.slice().reverse().map(x=>'<div class="queue"><span class="grow rtitle">♥ '+esc(x)+'</span></div>').join(""):"Ingen favoritter ennå."}catch(e){}}
+async function search(){let q=$("rq").value.trim();$("results").innerHTML="";$("requestMsg").textContent="";if(q.length<2){$("requestMsg").textContent="Skriv minst 2 tegn.";return}try{let d=await (await fetch(BASE+"/api/search?q="+encodeURIComponent(q)+"&t="+Date.now(),{cache:"no-store"})).json();if(!d.results?.length){$("results").innerHTML='<div class="muted" style="margin-top:10px">Ingen treff.</div>';return}d.results.forEach(x=>{let row=document.createElement("div");row.className="result";row.innerHTML='<img class="thumb" src="'+esc(x.cover||FALLBACK)+'"><div class="grow"><div class="rtitle">'+esc(x.title)+'</div><div class="small">'+(x.too_recent?"Spilt nylig":"Klar for ønske")+'</div></div>';let b=document.createElement("button");b.className="btn primary";b.textContent=x.too_recent?"Vent":"Ønsk";b.disabled=x.too_recent;b.style.opacity=x.too_recent?".45":"1";if(!x.too_recent)b.onclick=()=>requestSong(x.title,b);row.appendChild(b);$("results").appendChild(row)})}catch(e){$("requestMsg").textContent="Kunne ikke søke akkurat nå."}}
+$("searchBtn").onclick=search;$("rq").onkeydown=e=>{if(e.key==="Enter")search()};
+async function requestSong(title,b){b.disabled=true;try{let r=await fetch(BASE+"/api/request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,voter})});let d=await r.json();$("requestMsg").textContent=(d.ok?"✓ ":"")+(d.message||"");loadQueue();loadTop()}catch(e){$("requestMsg").textContent="Kunne ikke sende ønsket."}b.disabled=false}
+async function loadQueue(){try{let d=await (await fetch(BASE+"/api/requests?t="+Date.now(),{cache:"no-store"})).json();$("queue").innerHTML=d.requests?.length?d.requests.slice(0,8).map((x,i)=>'<div class="queue"><span class="rank">'+(i+1)+'</span><span class="grow rtitle">'+esc(x.title)+'</span><span class="count">👍 '+Number(x.votes||0)+'</span></div>').join(""):"Ingen ønsker akkurat nå."}catch(e){}}
+async function loadTop(){try{let d=await (await fetch(BASE+"/api/top?t="+Date.now(),{cache:"no-store"})).json();$("top10").innerHTML=d.top?.length?d.top.map((x,i)=>'<div class="toprow"><span class="rank">'+(i+1)+'</span><span class="grow rtitle">'+esc(x.title)+'</span><span class="count">'+Number(x.requests||0)+' ønsker</span></div>').join(""):"Topplisten fylles opp etter hvert som låter blir ønsket."}catch(e){}}
+function schedule(){let n=new Date(),day=n.getDay(),m=n.getHours()*60+n.getMinutes();document.querySelectorAll(".schedule-item").forEach(x=>{let days=x.dataset.days.split(",").map(Number),a=+x.dataset.start,b=+x.dataset.end;x.classList.toggle("live-row",days.includes(day)&&m>=a&&m<b)})}
+status();loadQueue();loadTop();loadFavs();schedule();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);setInterval(schedule,60000);
+</script></body></html>
