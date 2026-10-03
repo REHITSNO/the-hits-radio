@@ -37,6 +37,16 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
   letter-spacing:.7px;
 }
 
+.schedule{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
+.schedule-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:14px}
+.schedule-day{font-size:11px;font-weight:900;color:#aaa;letter-spacing:1px;margin:18px 0 7px}
+.schedule-item{display:flex;gap:12px;align-items:center;font-size:13px;padding:9px 8px;border-bottom:1px solid #ffffff0d;border-radius:9px}
+.schedule-time{width:72px;flex:0 0 72px;color:#929292;font-weight:700}
+.schedule-name{font-weight:700}
+.schedule-item.on-air{background:#b7ff0012;border:1px solid #b7ff004d}
+.schedule-item.on-air .schedule-time{color:#b7ff00}
+.schedule-item.on-air .schedule-name::after{content:"  • LIVE";color:#b7ff00;font-size:10px;font-weight:900}
+
 </style>
 </head>
 <body>
@@ -69,6 +79,25 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
     <div class="history-heading">SIST SPILT</div>
     <div id="historyList">Ingen historikk ennå</div>
   </section>
+  <section class="schedule">
+    <div class="schedule-heading">SENDEPLAN</div>
+    <div class="schedule-day">MANDAG–FREDAG</div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="0" data-end="360"><span class="schedule-time">00–06</span><span class="schedule-name">The Hits NON STOP NIGHT</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="360" data-end="720"><span class="schedule-time">06–12</span><span class="schedule-name">Dance Morgen</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="720" data-end="900"><span class="schedule-time">12–15</span><span class="schedule-name">Rush Hits</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="900" data-end="960"><span class="schedule-time">15–16</span><span class="schedule-name">The Hits NON STOP</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="960" data-end="1080"><span class="schedule-time">16–18</span><span class="schedule-name">The Hits Starz</span></div>
+    <div class="schedule-item" data-days="1,2,3,4,5" data-start="1080" data-end="1440"><span class="schedule-time">18–00</span><span class="schedule-name">The Hits NON STOP</span></div>
+    <div class="schedule-day">LØRDAG–SØNDAG</div>
+    <div class="schedule-item" data-days="0,6" data-start="0" data-end="360"><span class="schedule-time">00–06</span><span class="schedule-name">Non Stop HITS</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="360" data-end="720"><span class="schedule-time">06–12</span><span class="schedule-name">Non Stop Helg</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="720" data-end="900"><span class="schedule-time">12–15</span><span class="schedule-name">The Hits Starz</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="900" data-end="1080"><span class="schedule-time">15–18</span><span class="schedule-name">Non Stop Helg</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="1080" data-end="1320"><span class="schedule-time">18–22</span><span class="schedule-name">The Hits MIX</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="1320" data-end="1380"><span class="schedule-time">22–23</span><span class="schedule-name">The Hits NON STOP</span></div>
+    <div class="schedule-item" data-days="0,6" data-start="1380" data-end="1440"><span class="schedule-time">23–00</span><span class="schedule-name">Non Stop HITS</span></div>
+  </section>
+
 </main>
 
 <script>
@@ -162,6 +191,21 @@ async function refreshStation() {
     }
   }
 }
+
+
+function updateScheduleLive() {
+  const now = new Date();
+  const day = now.getDay();
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  document.querySelectorAll(".schedule-item").forEach(item => {
+    const days = item.dataset.days.split(",").map(Number);
+    const start = Number(item.dataset.start);
+    const end = Number(item.dataset.end);
+    item.classList.toggle("on-air", days.includes(day) && minutes >= start && minutes < end);
+  });
+}
+updateScheduleLive();
+setInterval(updateScheduleLive, 60000);
 
 refreshStation();
 setInterval(refreshStation, 7000);
