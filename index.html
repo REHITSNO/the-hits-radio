@@ -23,7 +23,9 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
 .volume-value{width:40px;text-align:right;color:#b7ff00;font-size:12px;font-weight:900}
 .history{border-top:1px solid #ffffff12;margin-top:28px;padding-top:22px;text-align:left}
 .history-heading{color:#8ec500;font-size:12px;font-weight:900;letter-spacing:1.2px;margin-bottom:12px}
-.history-item{display:flex;gap:10px;font-size:14px;padding:9px 0;border-bottom:1px solid #ffffff0d;line-height:1.25}\n.history-time{width:42px;flex:0 0 42px;color:#b7ff00;font-weight:900}\n.history-link{display:block;margin-top:15px;padding:12px 14px;border:1px solid #b7ff004d;border-radius:12px;color:#b7ff00;text-align:center;text-decoration:none;font-size:13px;font-weight:900;background:#b7ff0008}
+.history-item{display:flex;gap:10px;font-size:14px;padding:9px 0;border-bottom:1px solid #ffffff0d;line-height:1.25}
+.history-time{width:42px;flex:0 0 42px;color:#b7ff00;font-weight:900}
+.history-link{display:block;margin-top:15px;padding:12px 14px;border:1px solid #b7ff004d;border-radius:12px;color:#b7ff00;text-align:center;text-decoration:none;font-size:13px;font-weight:900;background:#b7ff0008}
 
 .next-song{
   margin:-14px 0 24px;
@@ -111,7 +113,9 @@ const nowPlaying = document.getElementById("nowPlaying");
 const liveProgram = document.getElementById("liveProgram");
 const nextSong = document.getElementById("nextSong");
 const cover = document.getElementById("cover");
-const historyList = document.getElementById("historyList");\nconst historyLink = document.getElementById("historyLink");\nhistoryLink.href = "history.html?api=" + encodeURIComponent(API_URL);
+const historyList = document.getElementById("historyList");
+const historyLink = document.getElementById("historyLink");
+historyLink.href = "history.html?api=" + encodeURIComponent(API_URL);
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeValue = document.getElementById("volumeValue");
 
