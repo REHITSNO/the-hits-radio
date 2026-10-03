@@ -62,7 +62,6 @@ button{width:100%;border:0;border-radius:999px;padding:18px;background:#b7ff00;c
   <div class="label">🎵 NÅ SPILLES</div>
   <div id="nowPlaying" class="title">Henter låt...</div>
   <div id="nextSong" class="next-song"><span>NESTE →</span> Henter neste låt...</div>
-  <div id="program" class="program">📻 THE HITS</div>
 
   <audio id="radio" preload="none"></audio>
   <button id="playButton">▶ Spill The Hits</button>
@@ -109,7 +108,6 @@ const radio = document.getElementById("radio");
 const playButton = document.getElementById("playButton");
 const statusText = document.getElementById("status");
 const nowPlaying = document.getElementById("nowPlaying");
-const program = document.getElementById("program");
 const liveProgram = document.getElementById("liveProgram");
 const nextSong = document.getElementById("nextSong");
 const cover = document.getElementById("cover");
@@ -181,7 +179,6 @@ async function refreshStation() {
     const data = await res.json();
 
     nowPlaying.textContent = data.title || "The Hits";
-    program.textContent = "📻 " + (data.program || "THE HITS");
     liveProgram.textContent = "● " + (data.program || "THE HITS").toUpperCase();
     nextSong.innerHTML = "<span>NESTE →</span> " + escapeHtml(data.next || "Ikke valgt ennå");
     cover.src = data.cover || FALLBACK;
