@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Hits • Web 2.0</title>
+<title>The Hits • LIVE</title>
+<link rel="icon" type="image/png" href="the-hits-logo.png">
+<link rel="apple-touch-icon" href="the-hits-logo.png">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#080a08;color:#f7f7f7;font-family:Arial,Helvetica,sans-serif}button,input{font:inherit}
 .wrap{max-width:980px;margin:auto;padding:18px 14px 110px}.hero{background:radial-gradient(circle at 50% 0,#b7ff0024,transparent 42%),linear-gradient(180deg,#11150f,#090b09);border:1px solid #ffffff10;border-radius:24px;padding:24px;text-align:center;box-shadow:0 18px 70px #000}
@@ -65,8 +67,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://subcommittee-performances-beef-action.trycloudflare.com/thehits";
-const API_URL = "https://boost-surprised-reggae-gamecube.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -83,7 +85,7 @@ const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIC
 const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
 async function status(){
- try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Kommer snart";updateMediaSession(d);renderRecent(d.history||[])}
+ try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";document.title=currentTitle+" • The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Kommer snart";updateMediaSession(d);renderRecent(d.history||[])}
  catch(e){$("song").textContent="Kunne ikke hente låt akkurat nå."}
 }
 
