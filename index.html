@@ -65,8 +65,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://tsunami-licence-won-pets.trycloudflare.com/thehits";
-const API_URL = "https://turner-passed-hint-doors.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -83,9 +83,13 @@ const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIC
 const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
 async function status(){
- try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Kommer snart";renderRecent(d.history||[])}
+ try{const d=await (await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"})).json();currentTitle=d.title||"The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;$("onAirName").textContent=d.program||"The Hits";$("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";$("comingUp").textContent=d.next_program||"–";$("powerHit").textContent=d.power_hit||"Kommer snart";updateMediaSession(d);renderRecent(d.history||[])}
  catch(e){$("song").textContent="Kunne ikke hente låt akkurat nå."}
 }
+
+function splitTrack(s){let p=String(s||"").split(" - ");return p.length>1?{artist:p.shift().trim(),title:p.join(" - ").trim()}:{artist:"The Hits",title:String(s||"The Hits")}}
+function updateMediaSession(d){if(!("mediaSession" in navigator))return;let t=splitTrack(d.title||"The Hits"),art=d.cover||new URL(FALLBACK,location.href).href;try{navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:t.artist,album:d.program||"The Hits",artwork:[{src:art,sizes:"600x600"}]})}catch(e){}}
+if("mediaSession" in navigator){try{navigator.mediaSession.setActionHandler("play",play);navigator.mediaSession.setActionHandler("pause",pause)}catch(e){}radio.addEventListener("play",()=>{try{navigator.mediaSession.playbackState="playing"}catch(e){}});radio.addEventListener("pause",()=>{try{navigator.mediaSession.playbackState="paused"}catch(e){}})}
 function renderRecent(items){const box=$("recent");box.innerHTML="";if(!items.length){box.innerHTML='<span class="muted">Historikken fylles opp når radioen spiller.</span>';return}items.slice(0,10).forEach(x=>{let el=document.createElement("div");el.className="recentcard";el.innerHTML='<img src="'+esc(x.cover||FALLBACK)+'" onerror="this.src=\''+FALLBACK+'\'"><div>'+esc(x.title||"")+'</div>';box.appendChild(el)})}
 async function favorite(){if(!currentTitle)return;let r=await fetch(BASE+"/api/favorite",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:currentTitle,voter})});let d=await r.json();$("favMsg").textContent=(d.ok?"♥ ":"")+(d.message||"");loadFavs()}
 $("fav").onclick=favorite;
