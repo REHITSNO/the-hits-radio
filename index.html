@@ -30,12 +30,24 @@
 @media(max-width:780px){.program-cards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.program-cards{grid-template-columns:1fr}.program-card{min-height:0}.program-card img{height:180px}}
 
+
+.top10-card{overflow:hidden}.top10-head{display:flex;justify-content:space-between;gap:14px;align-items:end;margin-bottom:10px}
+.top10-week{font-size:20px;font-weight:900}.top10-note{font-size:11px;color:#929292;text-align:right}
+.top10-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.top10-row{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:8px;padding:11px 2px;border-bottom:1px solid #ffffff0c}
+.top10-rank{font-size:20px;color:#b7ff00;font-weight:1000}.top10-track{font-size:13px;font-weight:900}.top10-artist{font-size:11px;color:#929292;margin-top:2px}
+.top10-move{font-size:11px;font-weight:900;white-space:nowrap}.up{color:#b7ff00}.down{color:#ff6868}.same{color:#929292}.new{color:#ffdf00}
+.day-buttons{display:flex;gap:7px;overflow:auto;padding:2px 0 14px;scrollbar-width:thin}
+.day-btn{border:1px solid #ffffff18;background:#171a17;color:#fff;border-radius:11px;padding:9px 13px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap}
+.day-btn:hover{border-color:#b7ff0060}.day-btn.active{background:#b7ff00;color:#080a08;border-color:#b7ff00}
+@media(max-width:680px){.top10-grid{grid-template-columns:1fr}.top10-head{align-items:start;flex-direction:column}.top10-note{text-align:left}}
+
 </style></head><body>
 <div class="wrap">
 <section class="hero">
 <img class="logo" src="the-hits-logo.png" alt="The Hits">
 <div><span class="live"><span class="dot"></span> THE HITS • LIVE</span></div>
-<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">SPILLES NÅ</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><button id="fav" class="btn secondary">♡ Favoritt</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div><div id="favMsg" class="msg"></div></div></div>
+<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">SPILLES NÅ</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div></div></div>
 </section>
 
 <div class="grid">
@@ -48,17 +60,20 @@
 <section class="card"><div class="title">🗳️ AKTIVE ØNSKER</div><div id="queue" class="muted">Ingen ønsker akkurat nå.</div></section>
 </div>
 
-<div class="grid">
-<section class="card"><div class="title">🔥 THE HITS TOP 10</div><div id="top10" class="muted">Henter topplisten…</div></section>
-<section class="card"><div class="title">❤️ MINE FAVORITTER</div><div id="favorites" class="muted">Ingen favoritter ennå.</div></section>
+<section class="card top10-card" style="margin-top:14px">
+<div class="top10-head">
+  <div><div class="title" style="margin-bottom:4px">🔥 THE HITS TOP 10</div><div class="top10-week">NORGE AKKURAT NÅ • UKE 40</div></div>
+  <div class="top10-note">Norske hitlister + The Hits</div>
 </div>
+<div id="top10"></div>
+</section>
 
 <section class="card" style="margin-top:14px"><div class="title">🕘 NYLIG SPILT PÅ THE HITS</div><div id="recent" class="recentstrip"></div></section>
 
 <section class="card" style="margin-top:14px">
-<div class="programs2-head"><div><div class="title" style="margin-bottom:4px">📅 PROGRAMMER</div><div id="todayTitle" class="programs2-day">I DAG</div><div class="programs2-sub">Dagens programmer på The Hits</div></div><button id="scheduleToggle" class="btn secondary">Se hele sendeplanen</button></div>
+<div class="programs2-head"><div><div class="title" style="margin-bottom:4px">📅 PROGRAMMER</div><div id="todayTitle" class="programs2-day">I DAG</div><div class="programs2-sub">Velg dag for å se programmene på The Hits</div></div></div>
+<div id="dayButtons" class="day-buttons"></div>
 <div id="todayPrograms" class="program-cards"></div>
-<div id="fullSchedule" class="full-schedule"></div>
 </section>
 <div class="nav"><a id="historyBottom" href="history.html">Se hele spillehistorikken →</a></div>
 </div>
@@ -67,8 +82,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://pursuant-exemption-crown-forums.trycloudflare.com/thehits";
-const API_URL = "https://rarely-counting-commons-cooper.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -93,14 +108,27 @@ function splitTrack(s){let p=String(s||"").split(" - ");return p.length>1?{artis
 function updateMediaSession(d){if(!("mediaSession" in navigator))return;let t=splitTrack(d.title||"The Hits"),art=d.cover||new URL(FALLBACK,location.href).href;try{navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:t.artist,album:d.program||"The Hits",artwork:[{src:art,sizes:"600x600"}]})}catch(e){}}
 if("mediaSession" in navigator){try{navigator.mediaSession.setActionHandler("play",play);navigator.mediaSession.setActionHandler("pause",pause)}catch(e){}radio.addEventListener("play",()=>{try{navigator.mediaSession.playbackState="playing"}catch(e){}});radio.addEventListener("pause",()=>{try{navigator.mediaSession.playbackState="paused"}catch(e){}})}
 function renderRecent(items){const box=$("recent");box.innerHTML="";if(!items.length){box.innerHTML='<span class="muted">Historikken fylles opp når radioen spiller.</span>';return}items.slice(0,10).forEach(x=>{let el=document.createElement("div");el.className="recentcard";el.innerHTML='<img src="'+esc(x.cover||FALLBACK)+'" onerror="this.src=\''+FALLBACK+'\'"><div>'+esc(x.title||"")+'</div>';box.appendChild(el)})}
-async function favorite(){if(!currentTitle)return;let r=await fetch(BASE+"/api/favorite",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title:currentTitle,voter})});let d=await r.json();$("favMsg").textContent=(d.ok?"♥ ":"")+(d.message||"");loadFavs()}
-$("fav").onclick=favorite;
-async function loadFavs(){try{let d=await (await fetch(BASE+"/api/favorites?voter="+encodeURIComponent(voter)+"&t="+Date.now(),{cache:"no-store"})).json();$("favorites").innerHTML=d.favorites?.length?d.favorites.slice().reverse().map(x=>'<div class="queue"><span class="grow rtitle">♥ '+esc(x)+'</span></div>').join(""):"Ingen favoritter ennå."}catch(e){}}
 async function search(){let q=$("rq").value.trim();$("results").innerHTML="";$("requestMsg").textContent="";if(q.length<2){$("requestMsg").textContent="Skriv minst 2 tegn.";return}try{let d=await (await fetch(BASE+"/api/search?q="+encodeURIComponent(q)+"&t="+Date.now(),{cache:"no-store"})).json();if(!d.results?.length){$("results").innerHTML='<div class="muted" style="margin-top:10px">Ingen treff.</div>';return}d.results.forEach(x=>{let row=document.createElement("div");row.className="result";row.innerHTML='<img class="thumb" src="'+esc(x.cover||FALLBACK)+'"><div class="grow"><div class="rtitle">'+esc(x.title)+'</div><div class="small">'+(x.too_recent?"Spilt nylig":"Klar for ønske")+'</div></div>';let b=document.createElement("button");b.className="btn primary";b.textContent=x.too_recent?"Vent":"Ønsk";b.disabled=x.too_recent;b.style.opacity=x.too_recent?".45":"1";if(!x.too_recent)b.onclick=()=>requestSong(x.title,b);row.appendChild(b);$("results").appendChild(row)})}catch(e){$("requestMsg").textContent="Kunne ikke søke akkurat nå."}}
 $("searchBtn").onclick=search;$("rq").onkeydown=e=>{if(e.key==="Enter")search()};
 async function requestSong(title,b){b.disabled=true;try{let r=await fetch(BASE+"/api/request",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({title,voter})});let d=await r.json();$("requestMsg").textContent=(d.ok?"✓ ":"")+(d.message||"");loadQueue();loadTop()}catch(e){$("requestMsg").textContent="Kunne ikke sende ønsket."}b.disabled=false}
 async function loadQueue(){try{let d=await (await fetch(BASE+"/api/requests?t="+Date.now(),{cache:"no-store"})).json();$("queue").innerHTML=d.requests?.length?d.requests.slice(0,8).map((x,i)=>'<div class="queue"><span class="rank">'+(i+1)+'</span><span class="grow rtitle">'+esc(x.title)+'</span><span class="count">👍 '+Number(x.votes||0)+'</span></div>').join(""):"Ingen ønsker akkurat nå."}catch(e){}}
-async function loadTop(){try{let d=await (await fetch(BASE+"/api/top?t="+Date.now(),{cache:"no-store"})).json();$("top10").innerHTML=d.top?.length?d.top.map((x,i)=>'<div class="toprow"><span class="rank">'+(i+1)+'</span><span class="grow rtitle">'+esc(x.title)+'</span><span class="count">'+Number(x.requests||0)+' ønsker</span></div>').join(""):"Topplisten fylles opp etter hvert som låter blir ønsket."}catch(e){}}
+const NORWAY_TOP10=[
+ {artist:"ULD",title:"Håper at du ser meg nå",move:"▲ 2",cls:"up"},
+ {artist:"Zimmermann feat. Bjørn Eidsvåg",title:"I takt med deg",move:"▼ 1",cls:"down"},
+ {artist:"Sienna Spiro",title:"Great Expectation",move:"▼ 1",cls:"down"},
+ {artist:"Shakira & Burna Boy",title:"Dai Dai",move:"▲ 1",cls:"up"},
+ {artist:"Taylor Swift",title:"Patient Zero",move:"NEW",cls:"new"},
+ {artist:"Roc Boyz & Vinni",title:"Håpløs",move:"▲ 1",cls:"up"},
+ {artist:"Zimmermann",title:"Puslespill",move:"▲ 4",cls:"up"},
+ {artist:"Arif Murakami",title:"Flexnes",move:"▼ 2",cls:"down"},
+ {artist:"Kygo feat. Flow Kingz, JMK & Lyng",title:"Kygo Jo",move:"–",cls:"same"},
+ {artist:"Tobias Sten",title:"Halvt forhold",move:"▼ 6",cls:"down"}
+];
+async function loadTop(){
+ $("top10").innerHTML='<div class="top10-grid">'+NORWAY_TOP10.map((x,i)=>
+  '<div class="top10-row"><div class="top10-rank">#'+(i+1)+'</div><div><div class="top10-track">'+esc(x.title)+'</div><div class="top10-artist">'+esc(x.artist)+'</div></div><div class="top10-move '+x.cls+'">'+x.move+'</div></div>'
+ ).join("")+'</div>';
+}
 
 const PROGRAMS={
  "Dance Morgen":{img:"dance-morgen.png",tag:"The perfect start to your day."},
@@ -119,20 +147,22 @@ const WEEKEND=[
  ["00–06","The Hits NON STOP"],["06–12","Non Stop Helg"],["12–15","Non Stop Helg"],
  ["15–18","Non Stop Helg"],["18–22","Dance Mix"],["22–00","The Hits NON STOP"]
 ];
-const DAYNAMES=["SØNDAG","MANDAG","TIRSDAG","ONSDAG","TORSDAG","FREDAG","LØRDAG"];
+const DAYNAMES=["SØN","MAN","TIR","ONS","TOR","FRE","LØR"];
+const DAYFULL=["SØNDAG","MANDAG","TIRSDAG","ONSDAG","TORSDAG","FREDAG","LØRDAG"];
+let selectedDay=new Date().getDay();
 function mins(t){let [h,m]=(t==="00"?"24:00":t).split(":").map(Number);return h*60+(m||0)}
 function activeSlot(time,now){let [a,b]=time.split("–");let start=mins(a),end=mins(b);if(end===0)end=1440;return now>=start&&now<end}
-function renderPrograms(){
- let d=new Date(),day=d.getDay(),now=d.getHours()*60+d.getMinutes(),weekend=(day===0||day===6),list=weekend?WEEKEND:WEEKDAY;
- $("todayTitle").textContent="I DAG • "+DAYNAMES[day];
+function renderPrograms(day=selectedDay){
+ selectedDay=day;
+ let d=new Date(),today=d.getDay(),now=d.getHours()*60+d.getMinutes(),weekend=(day===0||day===6),list=weekend?WEEKEND:WEEKDAY;
+ $("todayTitle").textContent=(day===today?"I DAG • ":"")+DAYFULL[day];
+ $("dayButtons").innerHTML=DAYNAMES.map((n,i)=>'<button class="day-btn '+(i===day?'active':'')+'" data-day="'+i+'">'+n+(i===today?' • I DAG':'')+'</button>').join("");
+ $("dayButtons").querySelectorAll(".day-btn").forEach(b=>b.onclick=()=>renderPrograms(Number(b.dataset.day)));
  $("todayPrograms").innerHTML=list.map(([time,name])=>{
-   let p=PROGRAMS[name],live=activeSlot(time,now);
+   let p=PROGRAMS[name],live=(day===today)&&activeSlot(time,now);
    return '<article class="program-card '+(live?'is-live':'')+'">'+(live?'<span class="live-badge">● LIVE</span>':'')+
    '<img src="'+p.img+'" alt="'+esc(name)+'"><div class="program-card-body"><div class="program-time">'+time+'</div><div class="program-card-name">'+esc(name)+'</div><div class="program-card-tag">'+esc(p.tag)+'</div></div></article>'
  }).join("");
- const block=(title,list)=>'<div class="schedule-day">'+title+'</div>'+list.map(([t,n])=>'<div class="schedule-item"><span>'+t+'</span><b>'+esc(n)+'</b></div>').join("");
- $("fullSchedule").innerHTML=block("MANDAG–FREDAG",WEEKDAY)+block("LØRDAG–SØNDAG",WEEKEND);
 }
-$("scheduleToggle").onclick=()=>{let b=$("fullSchedule"),open=b.classList.toggle("open");$("scheduleToggle").textContent=open?"Skjul sendeplanen":"Se hele sendeplanen"};
-status();loadQueue();loadTop();loadFavs();renderPrograms();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);setInterval(renderPrograms,60000);
+status();loadQueue();loadTop();renderPrograms();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);setInterval(renderPrograms,60000);
 </script></body></html>
