@@ -4,7 +4,44 @@
 <script>
 const q=new URLSearchParams(location.search),S=q.get("api")||"",STREAM=q.get("stream")||localStorage.getItem("theHitsStream")||"",API=S.replace(/\/api\/status(?:\?.*)?$/,"/api/history"),C=document.getElementById("content"),N=document.getElementById("count");let H=[],D=new Date();D.setHours(12,0,0,0);
 const K=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"),E=v=>String(v??"").replace(/[&<>"']/g,x=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[x]));
-function R(){let rows=H.filter(x=>x&&x.played_at&&K(new Date(x.played_at))===K(D)),gs=[];for(const x of rows){let n=(x.program||"Ukjent program").trim()||"Ukjent program",g=gs.find(y=>y.n===n);if(!g){g={n,items:[]};gs.push(g)}g.items.push(x)}let s=`<div class="day">${K(D)===K(new Date())?"I DAG":E(D.toLocaleDateString("no-NO",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).toUpperCase())}</div>`;if(!rows.length)s+='<div class="empty">Ingen registrerte låter denne dagen.</div>';for(const g of gs){s+=`<section class="program"><div class="pt">📻 ${E(g.n.toUpperCase())}</div>`;for(const x of g.items){let tm=new Date(x.played_at).toLocaleTimeString("no-NO",{hour:"2-digit",minute:"2-digit"}),pic=x.cover?`<img class="cover" src="${E(x.cover)}" loading="lazy">`:'<div class="fallback">♪</div>';s+=`<div class="row"><div class="time">${tm}</div>${pic}<div class="song">${E(x.title)}</div></div>`}s+="</section>"}C.innerHTML=s;N.textContent=rows.length?rows.length+" låter":"";let now=K(D)===K(new Date());today.classList.toggle("active",now);next.disabled=now;next.style.opacity=now?".4":"1"}
+function programAt(t){
+ const d=new Date(t),m=d.getHours()*60+d.getMinutes(),wd=d.getDay(),weekend=(wd===0||wd===6);
+ if(!weekend){
+  if(m<360)return "The Hits NON STOP NIGHT";
+  if(m<720)return "Dance Morgen";
+  if(m<900)return "Rush Hits";
+  return "The Hits NON STOP";
+ }
+ if(m<360)return "The Hits NON STOP";
+ if(m<720)return "Non Stop Helg";
+ if(m<1080)return "Non Stop Helg";
+ if(m<1320)return "Dance Mix";
+ return "The Hits NON STOP";
+}
+function R(){
+ let rows=H.filter(x=>x&&x.played_at&&K(new Date(x.played_at))===K(D)),gs=[];
+ for(const x of rows){
+  const replay=String(x.program||"").toUpperCase().includes("RE:PLAY");
+  let n=replay?programAt(x.played_at):((x.program||"Ukjent program").trim()||"Ukjent program");
+  let g=gs.find(y=>y.n===n);if(!g){g={n,items:[]};gs.push(g)}
+  g.items.push({...x,_replay:replay});
+ }
+ let s=`<div class="day">${K(D)===K(new Date())?"I DAG":E(D.toLocaleDateString("no-NO",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).toUpperCase())}</div>`;
+ if(!rows.length)s+='<div class="empty">Ingen registrerte låter denne dagen.</div>';
+ for(const g of gs){
+  g.items.sort((a,b)=>new Date(b.played_at)-new Date(a.played_at));
+  s+=`<section class="program"><div class="pt">📻 ${E(g.n.toUpperCase())}</div>`;
+  for(const x of g.items){
+   let tm=new Date(x.played_at).toLocaleTimeString("no-NO",{hour:"2-digit",minute:"2-digit"}),
+   pic=x.cover?`<img class="cover" src="${E(x.cover)}" loading="lazy">`:'<div class="fallback">♪</div>',
+   label=x._replay?'<span style="color:#b7ff00;font-size:11px;font-weight:900;display:block;margin-bottom:3px">🔁 RE:PLAY</span>':'';
+   s+=`<div class="row"><div class="time">${tm}</div>${pic}<div class="song">${label}${E(x.title)}</div></div>`;
+  }
+  s+="</section>";
+ }
+ C.innerHTML=s;N.textContent=rows.length?rows.length+" låter":"";
+ let now=K(D)===K(new Date());today.classList.toggle("active",now);next.disabled=now;next.style.opacity=now?".4":"1";
+}
 prev.onclick=()=>{D.setDate(D.getDate()-1);R()};next.onclick=()=>{if(K(D)!==K(new Date())){D.setDate(D.getDate()+1);R()}};today.onclick=()=>{D=new Date();D.setHours(12,0,0,0);R()};
 async function L(){try{let r=await fetch(API+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;let d=await r.json();H=Array.isArray(d.history)?d.history:[];R()}catch(e){C.innerHTML='<div class="empty">Kunne ikke hente spillehistorikken akkurat nå.</div>'}}L();setInterval(L,30000);
 
