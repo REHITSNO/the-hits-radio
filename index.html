@@ -48,6 +48,12 @@
 .day-btn:hover{border-color:#b7ff0060}.day-btn.active{background:#b7ff00;color:#080a08;border-color:#b7ff00}
 @media(max-width:680px){.top10-grid{grid-template-columns:1fr}.top10-head{align-items:start;flex-direction:column}.top10-note{text-align:left}}
 
+
+.station-branding{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:4px}
+.station-branding .logo{margin:0;max-width:270px}
+.program-hero-logo{display:none;width:auto;max-width:310px;max-height:170px;object-fit:contain;filter:drop-shadow(0 8px 20px #0008)}
+.replay-continues{display:none;margin-top:5px;color:#d7c8ff;font-size:13px;font-weight:900;letter-spacing:.5px}
+@media(max-width:620px){.station-branding{gap:8px}.station-branding .logo{max-width:220px}.program-hero-logo{max-width:240px;max-height:140px}}
 </style></head><body>
 <div id="offlineNotice" style="display:none;margin:0 0 14px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(0,0,0,.28)">
   <strong style="display:block;font-size:16px">📻 THE HITS ER MIDLERTIDIG OFFLINE</strong>
@@ -60,9 +66,12 @@
   <img src="the-hits-replay-banner.png" alt="The Hits RE:PLAY">
   <div class="replay-kicker">🔁 THE HITS RE:PLAY • ON AIR</div>
 </div>
+<div id="stationBranding" class="station-branding">
 <img id="mainLogo" class="logo" src="the-hits-logo.png" alt="The Hits">
+<img id="programHeroLogo" class="program-hero-logo" alt="Programlogo">
+</div>
 <div><span class="live"><span class="dot"></span> THE HITS • LIVE</span></div>
-<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">SPILLES NÅ</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div></div></div>
+<div class="nowgrid"><img id="cover" class="cover" src="the-hits-logo.png"><div><div class="eyebrow">SPILLES NÅ</div><div id="song" class="song">Henter låt…</div><div id="program" class="program">THE HITS</div><div id="replayContinues" class="replay-continues"></div><div id="next" class="next">Neste: –</div><div class="actions"><button id="play" class="btn primary">▶ Spill radio</button><a id="historyLink" href="history.html"><button class="btn secondary">🕘 Historikk</button></a></div></div></div>
 </section>
 
 <div class="grid">
@@ -97,8 +106,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://barriers-faced-actress-edges.trycloudflare.com/thehits";
-const API_URL = "https://suddenly-sensitive-believes-podcast.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -114,13 +123,31 @@ if(localStorage.getItem("theHitsPlaying")==="1")play();
 const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
 const tags={"Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
+function scheduledProgramNow(){
+ const now=new Date(), day=now.getDay(), h=now.getHours()+now.getMinutes()/60;
+ if(day>=1 && day<=5){
+  if(h<6)return "The Hits NON STOP NIGHT"; if(h<12)return "Dance Morgen"; if(h<15)return "Rush Hits"; if(h<16)return "The Hits NON STOP"; if(h<18)return "The Hits Starz"; return "The Hits NON STOP";
+ }
+ if(h<6)return "The Hits NON STOP"; if(h<12)return "Non Stop Helg"; if(h<15)return "The Hits Starz"; if(h<18)return "Non Stop Helg"; if(h<22)return "Dance Mix"; return "The Hits NON STOP";
+}
+function setProgramHero(program){
+ const img=$("programHeroLogo"), p=PROGRAMS[program];
+ if(p && p.img){img.src=p.img;img.alt=program;img.style.display="block"}else{img.style.display="none"}
+}
 function setReplayVisual(program){
  const isReplay=String(program||"").toUpperCase().includes("RE:PLAY");
  const hero=document.querySelector(".hero");
  const visual=$("replayVisual");
  const logo=$("mainLogo");
+ const continues=$("replayContinues");
+ const baseProgram=isReplay?scheduledProgramNow():program;
  visual.style.display=isReplay?"block":"none";
  logo.style.display=isReplay?"none":"";
+ setProgramHero(baseProgram);
+ if(isReplay){
+  continues.textContent=String(baseProgram||"THE HITS").toUpperCase()+" fortsetter etter RE:PLAY";
+  continues.style.display="block";
+ }else{continues.style.display="none";}
  hero.classList.toggle("replay-live",isReplay);
 }
 async function status(){
@@ -157,7 +184,6 @@ async function loadTop(){
 const PROGRAMS={
  "Dance Morgen":{img:"dance-morgen.png",tag:"The perfect start to your day."},
  "Rush Hits":{img:"rush-hits.png",tag:"The biggest hits for your afternoon."},
- "The Hits Starz":{img:"starz.png",tag:"The biggest throwback songs in one playlist."},
  "The Hits NON STOP":{img:"the-hits-non-stop.png",tag:"The biggest hits — non stop."},
  "The Hits NON STOP NIGHT":{img:"non-stop-night.png",tag:"The biggest hits through the night."},
  "Non Stop Helg":{img:"non-stop-helg.png",tag:"The perfect weekend soundtrack."},
