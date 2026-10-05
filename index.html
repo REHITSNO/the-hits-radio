@@ -97,8 +97,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://handy-reliance-jvc-certainly.trycloudflare.com/thehits";
-const API_URL = "https://presentations-seal-middle-outsourcing.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -124,7 +124,7 @@ function setReplayVisual(program){
  hero.classList.toggle("replay-live",isReplay);
 }
 async function status(){
- try{const resp=await fetch(BASE+"?t="+Date.now(),{cache:"no-store"});if(!resp.ok)throw new Error("API offline");const d=await resp.json();$("offlineNotice").style.display="none";$("play").disabled=false;currentTitle=d.title||"The Hits";document.title=currentTitle+" • The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();setReplayVisual(d.program);$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;{
+ try{const resp=await fetch(API_URL+"?t="+Date.now(),{cache:"no-store"});if(!resp.ok)throw new Error("API offline");const d=await resp.json();$("offlineNotice").style.display="none";$("play").disabled=false;currentTitle=d.title||"The Hits";document.title=currentTitle+" • The Hits";$("song").textContent=currentTitle;$("miniTrack").textContent=currentTitle;$("program").textContent=(d.program||"THE HITS").toUpperCase();$("miniProgram").textContent="● "+(d.program||"THE HITS").toUpperCase();setReplayVisual(d.program);$("next").textContent="Neste: "+(d.next||"–");$("cover").src=d.cover||FALLBACK;$("miniCover").src=d.cover||FALLBACK;{
  const replayOnAir=String(d.program||"").toUpperCase().includes("RE:PLAY");
  $("onAirName").textContent=d.program||"The Hits";
  $("onAirTag").style.display=replayOnAir?"none":"";
@@ -201,6 +201,5 @@ function renderPrograms(day=selectedDay){
    '<img src="'+p.img+'" alt="'+esc(name)+'"><div class="program-card-body"><div class="program-time">'+time+'</div><div class="program-card-name">'+esc(name)+'</div><div class="program-card-tag">'+esc(p.tag)+'</div></div></article>'
  }).join("");
 }
-  
 status();loadQueue();loadTop();renderPrograms();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);setInterval(renderPrograms,60000);
 </script><script>(function(){const launch=new Date("2027-01-01T00:00:00+01:00");const pad=n=>String(n).padStart(2,"0");function updateReHitsCountdown(){let diff=launch.getTime()-Date.now();if(diff<=0){const box=document.getElementById("rehitsLaunch");if(box)box.innerHTML='<div class="rehits-launch-kicker">DEN NYE ÆRAEN ER HER</div><div class="rehits-launch-title">VELKOMMEN TIL <b>RE:HITS</b></div><div class="rehits-launch-sub">HITS DIFFERENT.</div>';return}const total=Math.floor(diff/1000),days=Math.floor(total/86400),hours=Math.floor((total%86400)/3600),minutes=Math.floor((total%3600)/60),seconds=total%60;document.getElementById("rehitsDays").textContent=days;document.getElementById("rehitsHours").textContent=pad(hours);document.getElementById("rehitsMinutes").textContent=pad(minutes);document.getElementById("rehitsSeconds").textContent=pad(seconds)}updateReHitsCountdown();setInterval(updateReHitsCountdown,1000)})();</script></body></html>
