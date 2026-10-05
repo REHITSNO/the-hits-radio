@@ -50,8 +50,8 @@
 
 .rehits-launch{margin:0 0 14px;background:linear-gradient(135deg,#0d1714,#111411);border:1px solid #38f2c455;border-radius:19px;padding:16px 18px;text-align:center;box-shadow:0 0 28px #38f2c412}.rehits-launch-kicker{font-size:11px;color:#a7b3af;font-weight:900;letter-spacing:1.25px}.rehits-launch-title{font-size:clamp(18px,4vw,27px);font-weight:1000;margin-top:5px}.rehits-launch-title b{color:#38f2c4}.rehits-countdown{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:12px}.rehits-countbox{min-width:72px;background:#080d0b;border:1px solid #38f2c42b;border-radius:13px;padding:9px 10px}.rehits-countnum{display:block;color:#38f2c4;font-size:21px;font-weight:1000;line-height:1}.rehits-countlabel{display:block;color:#7f8d88;font-size:9px;font-weight:900;letter-spacing:1px;margin-top:5px}.rehits-launch-sub{font-size:11px;color:#89958f;margin-top:10px}</style></head><body>
 <div id="offlineNotice" style="display:none;margin:0 0 14px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(0,0,0,.28)">
-  <strong style="display:block;font-size:16px">📻 THE HITS ER MIDLERTIDIG OFFLINE</strong>
-  <span style="opacity:.8">Vi er snart tilbake! Prøv igjen om litt. 💚</span>
+  <strong style="display:block;font-size:16px">📻 NOW PLAYING ER MIDLERTIDIG UTILGJENGELIG</strong>
+  <span style="opacity:.8">Radioen kan fortsatt spilles mens vi kobler til låtinformasjonen igjen. 💚</span>
 </div>
 
 <div class="wrap"><section id="rehitsLaunch" class="rehits-launch"><div class="rehits-launch-kicker">EN NY ÆRA STARTER 01.01.27</div><div class="rehits-launch-title">THE HITS BLIR TIL <b>RE:HITS</b></div><div id="rehitsCountdown" class="rehits-countdown"><div class="rehits-countbox"><span id="rehitsDays" class="rehits-countnum">--</span><span class="rehits-countlabel">DAGER</span></div><div class="rehits-countbox"><span id="rehitsHours" class="rehits-countnum">--</span><span class="rehits-countlabel">TIMER</span></div><div class="rehits-countbox"><span id="rehitsMinutes" class="rehits-countnum">--</span><span class="rehits-countlabel">MIN</span></div><div class="rehits-countbox"><span id="rehitsSeconds" class="rehits-countnum">--</span><span class="rehits-countlabel">SEK</span></div></div><div class="rehits-launch-sub">RE:HITS • HITS DIFFERENT.</div></section>
@@ -97,8 +97,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://trailer-vegas-graduation-prerequisite.trycloudflare.com/thehits";
-const API_URL = "https://spencer-performing-write-nextel.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -138,7 +138,7 @@ async function status(){
  $("powerCard").querySelector(".title").textContent=replayNow?"🔁 RE:PLAY PÅ LUFTA NÅ":"🔁 NESTE RE:PLAY";
  $("powerHit").textContent=replayNow?(d.title||"RE:PLAY"):"Neste klokktime";
 }updateMediaSession(d);renderRecent(d.history||[])}
- catch(e){$("offlineNotice").style.display="block";$("song").textContent="The Hits er snart tilbake";$("next").textContent="Neste: –";$("play").disabled=true;if(!radio.paused)pause()}
+ catch(e){$("offlineNotice").style.display="block";$("song").textContent="Now Playing er midlertidig utilgjengelig";$("next").textContent="Neste: –";$("play").disabled=false}
 }
 
 function splitTrack(s){let p=String(s||"").split(" - ");return p.length>1?{artist:p.shift().trim(),title:p.join(" - ").trim()}:{artist:"The Hits",title:String(s||"The Hits")}}
