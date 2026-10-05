@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Hits • DIREKTE</title>
+<title>The Hits • LIVE</title>
 <link rel="icon" type="image/png" href="the-hits-logo.png">
 <link rel="apple-touch-icon" href="the-hits-logo.png">
 <style>
@@ -48,13 +48,13 @@
 .day-btn:hover{border-color:#b7ff0060}.day-btn.active{background:#b7ff00;color:#080a08;border-color:#b7ff00}
 @media(max-width:680px){.top10-grid{grid-template-columns:1fr}.top10-head{align-items:start;flex-direction:column}.top10-note{text-align:left}}
 
-</style></head><body>
+.rehits-launch{margin:0 0 14px;background:linear-gradient(135deg,#0d1714,#111411);border:1px solid #38f2c455;border-radius:19px;padding:16px 18px;text-align:center;box-shadow:0 0 28px #38f2c412}.rehits-launch-kicker{font-size:11px;color:#a7b3af;font-weight:900;letter-spacing:1.25px}.rehits-launch-title{font-size:clamp(18px,4vw,27px);font-weight:1000;margin-top:5px}.rehits-launch-title b{color:#38f2c4}.rehits-countdown{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:12px}.rehits-countbox{min-width:72px;background:#080d0b;border:1px solid #38f2c42b;border-radius:13px;padding:9px 10px}.rehits-countnum{display:block;color:#38f2c4;font-size:21px;font-weight:1000;line-height:1}.rehits-countlabel{display:block;color:#7f8d88;font-size:9px;font-weight:900;letter-spacing:1px;margin-top:5px}.rehits-launch-sub{font-size:11px;color:#89958f;margin-top:10px}</style></head><body>
 <div id="offlineNotice" style="display:none;margin:0 0 14px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(0,0,0,.28)">
   <strong style="display:block;font-size:16px">📻 THE HITS ER MIDLERTIDIG OFFLINE</strong>
   <span style="opacity:.8">Vi er snart tilbake! Prøv igjen om litt. 💚</span>
 </div>
 
-<div class="wrap">
+<div class="wrap"><section id="rehitsLaunch" class="rehits-launch"><div class="rehits-launch-kicker">EN NY ÆRA STARTER 01.01.27</div><div class="rehits-launch-title">THE HITS BLIR TIL <b>RE:HITS</b></div><div id="rehitsCountdown" class="rehits-countdown"><div class="rehits-countbox"><span id="rehitsDays" class="rehits-countnum">--</span><span class="rehits-countlabel">DAGER</span></div><div class="rehits-countbox"><span id="rehitsHours" class="rehits-countnum">--</span><span class="rehits-countlabel">TIMER</span></div><div class="rehits-countbox"><span id="rehitsMinutes" class="rehits-countnum">--</span><span class="rehits-countlabel">MIN</span></div><div class="rehits-countbox"><span id="rehitsSeconds" class="rehits-countnum">--</span><span class="rehits-countlabel">SEK</span></div></div><div class="rehits-launch-sub">RE:HITS • HITS DIFFERENT.</div></section>
 <section class="hero">
 <div id="replayVisual" class="replay-visual" style="display:none">
   <img src="the-hits-replay-banner.png" alt="The Hits RE:PLAY">
@@ -67,7 +67,7 @@
 
 <div class="grid">
 <section class="card onair"><div class="title">📻 PÅ LUFTA</div><div id="onAirName" class="program-name">The Hits</div><div id="onAirTag" class="program-tag">Only the biggest hits.</div><div class="coming">⏭️ Kommer: <b id="comingUp">–</b></div></section>
-<section id="powerCard" class="card power"><div class="title">🔁 NESTE RE:PLAY</div><div id="powerHit" class="program-name">Neste klokketime</div><div class="program-tag">En klassiker fra 80-, 90- eller 2000-tallet.</div></section>
+<section id="powerCard" class="card power"><div class="title">🔁 NESTE RE:PLAY</div><div id="powerHit" class="program-name">Neste klokktime</div><div class="program-tag">En klassiker fra 80-, 90- eller 2000-tallet.</div></section>
 </div>
 
 <div class="grid">
@@ -97,8 +97,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://april-being-politicians-isolated.trycloudflare.com/thehits";
-const API_URL = "https://chip-commercial-endless-singer.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -202,4 +202,4 @@ function renderPrograms(day=selectedDay){
  }).join("");
 }
 status();loadQueue();loadTop();renderPrograms();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);setInterval(renderPrograms,60000);
-</script></body></html>
+</script><script>(function(){const launch=new Date("2027-01-01T00:00:00+01:00");const pad=n=>String(n).padStart(2,"0");function updateReHitsCountdown(){let diff=launch.getTime()-Date.now();if(diff<=0){const box=document.getElementById("rehitsLaunch");if(box)box.innerHTML='<div class="rehits-launch-kicker">DEN NYE ÆRAEN ER HER</div><div class="rehits-launch-title">VELKOMMEN TIL <b>RE:HITS</b></div><div class="rehits-launch-sub">HITS DIFFERENT.</div>';return}const total=Math.floor(diff/1000),days=Math.floor(total/86400),hours=Math.floor((total%86400)/3600),minutes=Math.floor((total%3600)/60),seconds=total%60;document.getElementById("rehitsDays").textContent=days;document.getElementById("rehitsHours").textContent=pad(hours);document.getElementById("rehitsMinutes").textContent=pad(minutes);document.getElementById("rehitsSeconds").textContent=pad(seconds)}updateReHitsCountdown();setInterval(updateReHitsCountdown,1000)})();</script></body></html>
