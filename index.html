@@ -97,8 +97,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://prove-statutory-separately-colors.trycloudflare.com/thehits";
-const API_URL = "https://structure-under-divided-qld.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -112,7 +112,7 @@ function pause(){radio.pause();$("play").textContent="▶ Spill radio";$("miniPl
 $("play").onclick=()=>radio.paused?play():pause();$("miniPlay").onclick=()=>radio.paused?play():pause();
 if(localStorage.getItem("theHitsPlaying")==="1")play();
 const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
-const tags={"THE HITS RE:FRESH":"Nytt, trending og dance med energi.","Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
+const tags={"THE HITS RE:FRESH":"Nye og trendende hits med energi.","Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
 function setReplayVisual(program){
  const isReplay=String(program||"").toUpperCase().includes("RE:PLAY");
@@ -169,7 +169,7 @@ async function loadTop(){
 
 const PROGRAMS={
  "Dance Morgen":{img:"dance-morgen.png",tag:"The perfect start to your day."},
- "Rush Hits":{img:"rush-hits.png",tag:"The biggest hits for your afternoon."},
+ "THE HITS RE:FRESH":{img:"the-hits-refresh.png",tag:"Nye og trendende hits med energi."},
  "The Hits Starz":{img:"starz.png",tag:"The biggest throwback songs in one playlist."},
  "The Hits NON STOP":{img:"the-hits-non-stop.png",tag:"The biggest hits — non stop."},
  "The Hits NON STOP NIGHT":{img:"non-stop-night.png",tag:"The biggest hits through the night."},
@@ -177,7 +177,7 @@ const PROGRAMS={
  "Dance Mix":{img:"dance-mix.png",tag:"The hottest dance hits — in one mix."}
 };
 const WEEKDAY=[
- ["00–06","The Hits NON STOP NIGHT"],["06–12","Dance Morgen"],["12–15","Rush Hits"],
+ ["00–06","The Hits NON STOP NIGHT"],["06–12","Dance Morgen"],["12–15","THE HITS RE:FRESH"],
  ["15–16","The Hits NON STOP"],["16–18","The Hits NON STOP"],["18–00","The Hits NON STOP"]
 ];
 const WEEKEND=[
