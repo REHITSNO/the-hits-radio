@@ -23,20 +23,6 @@
 @keyframes replayIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 @media(max-width:680px){.wrap{padding:10px 10px 105px}.hero{padding:18px 14px}.nowgrid{grid-template-columns:1fr;text-align:center}.cover{width:165px;height:165px;margin:auto}.song{font-size:21px}.actions{justify-content:center}.grid{grid-template-columns:1fr}.searchrow{grid-template-columns:1fr 95px}.vol{width:65px}.bottom{bottom:7px}.bottom .secondary{padding:10px}.card{padding:15px}}
 
-.programs2-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:13px}
-.programs2-day{font-size:21px;font-weight:900}.programs2-sub{font-size:11px;color:#929292;margin-top:3px}
-.program-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.program-card{position:relative;overflow:hidden;background:#0b0e0b;border:1px solid #ffffff12;border-radius:17px;min-height:230px;box-shadow:0 10px 28px #0006}
-.program-card.is-live{border-color:#b7ff00;box-shadow:0 0 0 1px #b7ff0040,0 12px 34px #000}
-.program-card img{width:100%;height:155px;object-fit:contain;display:block;background:radial-gradient(circle,#1b2118 0,#090b09 72%);padding:7px}
-.program-card-body{padding:11px 12px 13px}.program-time{font-size:11px;color:#b7ff00;font-weight:900;letter-spacing:.7px}.program-card-name{font-size:15px;font-weight:900;margin-top:3px}.program-card-tag{font-size:11px;color:#999;line-height:1.35;margin-top:4px}
-.live-badge{position:absolute;top:9px;right:9px;background:#b7ff00;color:#071006;font-size:10px;font-weight:1000;padding:6px 8px;border-radius:999px;box-shadow:0 0 18px #b7ff0080}
-.full-schedule{display:none;margin-top:14px;border-top:1px solid #ffffff10;padding-top:12px}
-.full-schedule.open{display:block}.schedule-day{margin-top:13px;color:#b7ff00;font-size:12px;font-weight:900;letter-spacing:1px}
-@media(max-width:780px){.program-cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.program-cards{grid-template-columns:1fr}.program-card{min-height:0}.program-card img{height:180px}}
-
-
 .top10-card{overflow:hidden}.top10-head{display:flex;justify-content:space-between;gap:14px;align-items:end;margin-bottom:10px}
 .top10-week{font-size:20px;font-weight:900}.top10-note{font-size:11px;color:#929292;text-align:right}
 .top10-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
@@ -85,11 +71,6 @@
 
 <section class="card" style="margin-top:14px"><div class="title">🕘 NYLIG SPILT PÅ THE HITS</div><div id="recent" class="recentstrip"></div></section>
 
-<section class="card" style="margin-top:14px">
-<div class="programs2-head"><div><div class="title" style="margin-bottom:4px">📅 PROGRAMMER</div><div id="todayTitle" class="programs2-day">I DAG</div><div class="programs2-sub">Velg dag for å se programmene på The Hits</div></div></div>
-<div id="dayButtons" class="day-buttons"></div>
-<div id="todayPrograms" class="program-cards"></div>
-</section>
 <div class="nav"><a id="historyBottom" href="history.html">Se hele spillehistorikken →</a></div>
 </div>
 
@@ -97,8 +78,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://wishing-solo-outputs-announcement.trycloudflare.com/thehits";
-const API_URL = "https://hollywood-washer-damaged-floors.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -167,39 +148,5 @@ async function loadTop(){
  ).join("")+'</div>';
 }
 
-const PROGRAMS={
- "Dance Morgen":{img:"dance-morgen.png",tag:"The perfect start to your day."},
- "THE HITS RE:FRESH":{img:"the-hits-refresh.png",tag:"Nye og trendende hits med energi."},
- "The Hits Starz":{img:"starz.png",tag:"The biggest throwback songs in one playlist."},
- "The Hits NON STOP":{img:"the-hits-non-stop.png",tag:"The biggest hits — non stop."},
- "The Hits NON STOP NIGHT":{img:"non-stop-night.png",tag:"The biggest hits through the night."},
- "Non Stop Helg":{img:"non-stop-helg.png",tag:"The perfect weekend soundtrack."},
- "Dance Mix":{img:"dance-mix.png",tag:"The hottest dance hits — in one mix."}
-};
-const WEEKDAY=[
- ["00–06","The Hits NON STOP NIGHT"],["06–12","Dance Morgen"],["12–15","THE HITS RE:FRESH"],
- ["15–16","The Hits NON STOP"],["16–18","The Hits NON STOP"],["18–00","The Hits NON STOP"]
-];
-const WEEKEND=[
- ["00–06","The Hits NON STOP"],["06–12","Non Stop Helg"],["12–15","Non Stop Helg"],
- ["15–18","Non Stop Helg"],["18–22","Dance Mix"],["22–00","The Hits NON STOP"]
-];
-const DAYNAMES=["SØN","MAN","TIR","ONS","TOR","FRE","LØR"];
-const DAYFULL=["SØNDAG","MANDAG","TIRSDAG","ONSDAG","TORSDAG","FREDAG","LØRDAG"];
-let selectedDay=new Date().getDay();
-function mins(t){let [h,m]=(t==="00"?"24:00":t).split(":").map(Number);return h*60+(m||0)}
-function activeSlot(time,now){let [a,b]=time.split("–");let start=mins(a),end=mins(b);if(end===0)end=1440;return now>=start&&now<end}
-function renderPrograms(day=selectedDay){
- selectedDay=day;
- let d=new Date(),today=d.getDay(),now=d.getHours()*60+d.getMinutes(),weekend=(day===0||day===6),list=weekend?WEEKEND:WEEKDAY;
- $("todayTitle").textContent=(day===today?"I DAG • ":"")+DAYFULL[day];
- $("dayButtons").innerHTML=DAYNAMES.map((n,i)=>'<button class="day-btn '+(i===day?'active':'')+'" data-day="'+i+'">'+n+(i===today?' • I DAG':'')+'</button>').join("");
- $("dayButtons").querySelectorAll(".day-btn").forEach(b=>b.onclick=()=>renderPrograms(Number(b.dataset.day)));
- $("todayPrograms").innerHTML=list.map(([time,name])=>{
-   let p=PROGRAMS[name],live=(day===today)&&activeSlot(time,now);
-   return '<article class="program-card '+(live?'is-live':'')+'">'+(live?'<span class="live-badge">● LIVE</span>':'')+
-   '<img src="'+p.img+'" alt="'+esc(name)+'"><div class="program-card-body"><div class="program-time">'+time+'</div><div class="program-card-name">'+esc(name)+'</div><div class="program-card-tag">'+esc(p.tag)+'</div></div></article>'
- }).join("");
-}
-status();loadQueue();loadTop();renderPrograms();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);setInterval(renderPrograms,60000);
+status();loadQueue();loadTop();setInterval(status,10000);setInterval(loadQueue,15000);setInterval(loadTop,30000);
 </script><script>(function(){const launch=new Date("2027-01-01T00:00:00+01:00");const pad=n=>String(n).padStart(2,"0");function updateReHitsCountdown(){let diff=launch.getTime()-Date.now();if(diff<=0){const box=document.getElementById("rehitsLaunch");if(box)box.innerHTML='<div class="rehits-launch-kicker">DEN NYE ÆRAEN ER HER</div><div class="rehits-launch-title">VELKOMMEN TIL <b>RE:HITS</b></div><div class="rehits-launch-sub">HITS DIFFERENT.</div>';return}const total=Math.floor(diff/1000),days=Math.floor(total/86400),hours=Math.floor((total%86400)/3600),minutes=Math.floor((total%3600)/60),seconds=total%60;document.getElementById("rehitsDays").textContent=days;document.getElementById("rehitsHours").textContent=pad(hours);document.getElementById("rehitsMinutes").textContent=pad(minutes);document.getElementById("rehitsSeconds").textContent=pad(seconds)}updateReHitsCountdown();setInterval(updateReHitsCountdown,1000)})();</script></body></html>
