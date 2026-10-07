@@ -78,8 +78,8 @@
 <audio id="radio" preload="none"></audio>
 
 <script>
-const STREAM_URL = "https://originally-obtaining-pockets-dream.trycloudflare.com/thehits";
-const API_URL = "https://wellness-herald-auckland-cir.trycloudflare.com/api/status";
+const STREAM_URL = "https://behalf-karaoke-shelf-tamil.trycloudflare.com/thehits";
+const API_URL = "https://til-voluntary-benjamin-dig.trycloudflare.com/api/status";
 const BASE = API_URL.replace(/\/api\/status$/,"");
 const FALLBACK="the-hits-logo.png";
 const $=id=>document.getElementById(id);
@@ -95,6 +95,20 @@ if(localStorage.getItem("theHitsPlaying")==="1")play();
 const hist="history.html?api="+encodeURIComponent(API_URL)+"&stream="+encodeURIComponent(STREAM_URL);$("historyLink").href=hist;$("historyBottom").href=hist;
 const tags={"THE HITS RE:FRESH":"Nye og trendende hits med energi.","Dance Morgen":"The best dance hits to start your day. ☀️","Rush Hits":"Today's biggest hits — non stop energy. ⚡","The Hits Starz":"The biggest throwback songs in one playlist. 📼","Dance Mix":"The hottest dance hits — in one mix. 🎧","The Hits NON STOP":"The biggest hits — non stop. ▶","The Hits NON STOP NIGHT":"The best hits — all night long. 🌙","Non Stop Helg":"Weekend hits, all day long. 🎉","Non Stop HITS":"The biggest hits — non stop. ▶"};
 let currentTitle="";
+function nextProgramStartTime(program){
+ const p=String(program||"").toUpperCase();
+ const d=new Date(), day=d.getDay(), weekend=(day===0||day===6);
+ if(!weekend){
+   if(p==="THE HITS RE:FRESH") return "12:00";
+   if(p==="THE HITS NON STOP" && d.getHours()>=12) return "15:00";
+   if(p==="THE HITS NON STOP" && d.getHours()<6) return "06:00";
+   if(p==="THE HITS NON STOP NIGHT") return "00:00";
+ }
+ if(p==="NON STOP HELG") return "06:00";
+ if(p==="DANCE MIX") return "18:00";
+ if(p==="THE HITS NON STOP" && weekend) return "22:00";
+ return "";
+}
 function setReplayVisual(program){
  const isReplay=String(program||"").toUpperCase().includes("RE:PLAY");
  const hero=document.querySelector(".hero");
@@ -112,7 +126,11 @@ async function status(){
  document.querySelector(".onair .coming").style.display=replayOnAir?"none":"";
  if(!replayOnAir){
    $("onAirTag").textContent=tags[d.program]||"Only the biggest hits.";
-   $("comingUp").textContent=d.next_program||"–";
+   {
+      const np=d.next_program||"–";
+      const nt=nextProgramStartTime(np);
+      $("comingUp").textContent=np+(nt?" • "+nt:"");
+    }
  }
 }{
  const replayNow=String(d.program||"").toUpperCase().includes("RE:PLAY");
